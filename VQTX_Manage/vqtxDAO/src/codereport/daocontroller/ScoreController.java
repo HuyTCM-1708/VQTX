@@ -1,0 +1,128 @@
+/**
+ * Licensed to HSLK.Info under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work
+ * for additional information regarding copyright ownership.
+ * HSLK.Info licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a
+ * copy of the License at:
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package codereport.daocontroller;
+
+import java.io.Serializable;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+
+import codereport.entity.Score;
+import codereport.entity.ScorePK;
+
+/**
+ * @author HuyTCM
+ *
+ */
+public class ScoreController implements Serializable {
+
+    /** .*/
+    private static final long serialVersionUID = 1L;
+    /**Initial Logger .*/
+    private static final Logger LOGGER = Logger.getLogger(ScoreController.class);
+    /**Declare entity manager factory .*/
+    private EntityManagerFactory emf = null;
+    
+    /**
+     * Constructor ScoreController.
+     * @param emf - entity manager factory.
+     */
+    public ScoreController(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
+    /**
+     * @return entity manager.
+     */
+    public EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+    /**
+     * Create new score.
+     * @param score - object score.
+     * @throws Exception - exception.
+     */
+    public void create(Score score) throws Exception {
+        EntityManager entityManager = null;
+        try {
+            entityManager = getEntityManager();
+            entityManager.getTransaction().begin();
+            entityManager.persist(score);
+            entityManager.getTransaction().commit();
+        } catch (Exception ex) {
+            entityManager.getTransaction().rollback();
+            throw new Exception(ex);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+    /**
+     * Update score.
+     * @param score - score.
+     * @throws Exception - exception.
+     */
+    public void edit(Score score) throws Exception {
+        EntityManager entityManager = null;
+        try {
+            entityManager = getEntityManager();
+            entityManager.getTransaction().begin();
+            score = entityManager.merge(score);
+            entityManager.getTransaction().commit();
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+    /**
+     * Check if record score is existed.
+     * @param scorePK - scorePK.
+     * @return score == null.
+     */
+    public boolean checkExist(ScorePK scorePK) {
+        EntityManager entityManager = null;
+        try {
+            entityManager = getEntityManager();
+            Score score = entityManager.find(Score.class, scorePK);
+            return score == null;
+        } catch (Exception ex) {
+           LOGGER.error("Exception check exist", ex);
+           return false;
+        }
+    }
+    /**
+     * Get score by score PK.
+     * @param scorePK - scorePK.
+     * @return score.
+     */
+    public Score getScore(ScorePK scorePK) {
+        EntityManager entityManager = null;
+        try {
+            entityManager = getEntityManager();
+            String jqpl = "Score.getScore";
+            Query query = entityManager.createNamedQuery(jqpl);
+            query.setParameter("scorePK", scorePK);
+            return (Score) query.getSingleResult();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+}
