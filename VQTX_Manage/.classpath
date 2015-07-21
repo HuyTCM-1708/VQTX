@@ -27,9 +27,9 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="vqtxDAO/lib/javax.persistence_2.1.0.v201304241213.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sky/.m2/repository/org/eclipse/persistence/javax.persistence/2.1.0/javax.persistence-2.1.0.jar"/>
-	<classpathentry kind="lib" path="vqtxDAO/lib/mysql-connector-java-5.1.35-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/jre1.8.0_45/lib/taglibs-standard-jstlel-1.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/javax.persistence-2.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/mysql-connector-java-5.1.36-bin.jar"/>
+	<classpathentry exported="true" kind="lib" path="src/main/resources/taglibs-standard-jstlel-1.2.5.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/com.mysql.jdbc_5.1.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
