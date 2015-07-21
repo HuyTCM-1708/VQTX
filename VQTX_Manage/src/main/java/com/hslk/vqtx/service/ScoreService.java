@@ -48,7 +48,7 @@ public class ScoreService {
      * @param note - note (optional)
      */
     public void addScore(String stationCode, String teamCode, String score1, String score2, String score3,
-            String penalty, String note) {
+            String bonus, String bonusNote, String penalty,String penaltyNote, String note) {
         ScoreController scoreController = new ScoreController(entityManagerFactory);
         ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
         Score score = new Score();

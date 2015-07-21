@@ -302,17 +302,28 @@ public class HomeController {
         String score1 = request.getParameter("txtScore1");
         String score2 = request.getParameter("txtScore2");
         String score3 = request.getParameter("txtScore3");
+        String bonus = request.getParameter("bonus");
+        String bonusNote = bonus + " " + request.getParameter("bonusNote");
         String penalty = request.getParameter("penalty");
+        String penaltyNote = penalty + " " + request.getParameter("penaltyNote");
         String note = request.getParameter("note");
         
         if (teamCode != "0") {
-            scoreService.addScore(stationCode, teamCode, score1, score2, score3, penalty, note);
-        }
-        
-        try {
-            response.sendRedirect(chiefPage);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        	try {
+        		scoreService.addScore(stationCode, teamCode, score1, score2, score3, bonus, bonusNote, penalty, penaltyNote, note);
+        		try {
+                    response.sendRedirect(chiefPage);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+			} catch (Exception e) {
+				try {
+	                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Đã có lỗi khi nhập điểm, hãy thử lại lần nữa."
+	                		+ "\n Chú ý quy tắc nhập điểm");
+	            } catch (IOException ex1) {
+	                LOGGER.error("Send redirect error occur exception!");
+	            }
+			}
         }
     }
     /**

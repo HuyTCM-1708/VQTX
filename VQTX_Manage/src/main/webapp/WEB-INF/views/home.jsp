@@ -2,6 +2,7 @@
 <%@ page session="true" pageEncoding="utf-8"%>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Home</title>
 <title>VQTX-Quản lý</title>
 <style type="text/css">
@@ -16,10 +17,9 @@
 </style>
 </head>
 <body>
-<div class="col-4"></div>
-<div class="col-4">
-    <h1>Vòng quanh thị xã - HSLK.Info</h1>
-
+<div>
+    <h1>Vòng quanh thị xã - 2015</h1>
+	<h1>CLB Học sinh - Sinh viên thị xã Long Khánh</h1>
     <P>The time on the server is ${serverTime}.</P>
     <c:if test="${not empty msg}">
         <span><font color="red">${msg}</font></span>

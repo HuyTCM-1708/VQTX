@@ -55,9 +55,18 @@ public class Score implements Serializable {
     /**Score 3 .*/
     @Column(name = "Score3")
     private Integer score3;
+    /**Bonus score .*/
+    @Column(name = "Bonus")
+    private Integer bonus;
+    /**Bonus note .*/
+    @Column(name = "BonusNote")
+    private String bonusNote;
     /**Penalty score .*/
     @Column(name = "Penalty")
     private Integer penalty;
+    /**Penalty note .*/
+    @Column(name = "PenaltyNote")
+    private String penaltyNote;
     /**Note if exist, optional .*/
     @Column(name = "Note")
     private String note;
@@ -149,7 +158,43 @@ public class Score implements Serializable {
     public void setPenalty(Integer penalty) {
         this.penalty = penalty;
     }
-    @Override
+    /**
+	 * @return the bonus
+	 */
+	public Integer getBonus() {
+		return bonus;
+	}
+	/**
+	 * @param bonus the bonus to set
+	 */
+	public void setBonus(Integer bonus) {
+		this.bonus = bonus;
+	}
+	/**
+	 * @return the bonusNote
+	 */
+	public String getBonusNote() {
+		return bonusNote;
+	}
+	/**
+	 * @param bonusNote the bonusNote to set
+	 */
+	public void setBonusNote(String bonusNote) {
+		this.bonusNote = bonusNote;
+	}
+	/**
+	 * @return the penaltyNote
+	 */
+	public String getPenaltyNote() {
+		return penaltyNote;
+	}
+	/**
+	 * @param penaltyNote the penaltyNote to set
+	 */
+	public void setPenaltyNote(String penaltyNote) {
+		this.penaltyNote = penaltyNote;
+	}
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (scorePK != null ? scorePK.hashCode() : 0);

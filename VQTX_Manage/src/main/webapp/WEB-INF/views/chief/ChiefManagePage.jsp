@@ -3,7 +3,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,height=90%,  user-scalable = no">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>VQTX-Trạm trưởng</title>
 <script src="${pageContext.servletContext.contextPath}/resources/jquery-1.11.3.js"></script>
 </head>
@@ -103,34 +104,32 @@
                     </tr>
                     <tr>
                         <th>Điểm 1</th>
-                        <th><input id="score1" type="text" name="txtScore1" /></th>
-                        <td><input type="submit" name="submitScore1" />
-                        <td>
+                        <th><input id="score1" type="text" name="txtScore1" style="width: 100px;" pattern="\d+" /></th>
                     </tr>
                     <tr>
                         <th>Điểm 2</th>
-                        <th><input id="score2" type="text" name="txtScore2" /></th>
-                        <td><input type="submit" name="submitScore2" />
-                        <td>
+                        <th><input id="score2" type="text" name="txtScore2" style="width: 100px;"pattern="\d+"/></th>
                     </tr>
                     <tr>
                         <th>Điểm 3</th>
-                        <th><input id="score3" type="text" name="txtScore3" /></th>
-                        <td><input type="submit" name="submitScore3" />
-                        <td>
+                        <th><input id="score3" type="text" name="txtScore3" style="width: 100px;"pattern="\d+"/></th>
+                    </tr>
+                    <tr>
+                        <th>Điểm cộng</th>
+                        <th><input id="bonus" type="text" name="bonus" style="width: 100px;"pattern="\d+"/></th>
+                        <td><input id="bonusNote" type="text" name="bonusNote"/></td> 
                     </tr>
                     <tr>
                         <th>Điểm trừ</th>
-                        <th><input id="penalty" type="text" name="penalty" /></th>
-                        <td><input type="submit" name="submitPenalty" />
-                        <td>
+                        <th><input id="penalty" type="text" name="penalty" style="width: 100px;"pattern="\d+"/></th>
+                    	<td><input id="penaltyNote" type="text" name="penaltyNote"/></td> 
                     </tr>
                     <tr>
                         <th>Ghi chú</th>
-                        <th><textarea id="note" rows="4" cols="30" name="note" /></textarea></th>
+                        <th colspan="2"><textarea id="note" rows="4" cols="30" name="note" /></textarea></th>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td colspan="2"></td>
                         <td style="float: right;"><input type="submit" value="Lưu" /> <input type="reset"
                             value="Reset" /></td>
                     </tr>
