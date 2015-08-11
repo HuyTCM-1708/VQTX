@@ -18,6 +18,8 @@
  */
 package com.hslk.vqtx.service;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,8 +28,13 @@ import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
 
+import codereport.daocontroller.CryptogramController;
+import codereport.daocontroller.ScoreController;
 import codereport.daocontroller.TeamController;
 import codereport.daocontroller.UserController;
+import codereport.entity.Cryptogram;
+import codereport.entity.Score;
+import codereport.entity.ScorePK;
 import codereport.entity.Team;
 import codereport.entity.User;
 
@@ -108,5 +115,129 @@ public class TeamService {
                 //do nothing
             }
         }
+    }
+    public boolean updateTeam(Integer teamCode, String teamName, String teamLead, String phone, String member1,
+    		String member2, String member3, String member4, String member5, String member6, String member7) {
+    	TeamController teamController = new TeamController(entityManagerFactory);
+    	Team team = teamController.findUser(teamCode);
+    	ScorePK scorePK = new ScorePK(0, Integer.valueOf(teamCode));
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	if (team != null) {
+			team.setTeamName(teamName);
+			team.setTeamLead(teamLead);
+			team.setPhone(phone);
+			team.setMember1(member1);
+			team.setMember2(member2);
+			team.setMember3(member3);
+			team.setMember4(member4);
+			team.setMember5(member5);
+			team.setMember6(member6);
+			team.setMember7(member7);
+			try {
+				teamController.edit(team);
+				Score score = scoreController.checkExist(scorePK);
+				if (score == null) {
+					score = new Score();
+					score.setScorePK(scorePK);
+					score.setCompleted(true);
+					score.setProcessing(true);
+					score.setNumOfHint(0);
+				}
+				scoreController.create(score);
+				return true;
+			} catch (Exception e) {
+				logger.error("Update team:",e);
+				return false;
+			}
+		}
+    	return false;
+    }
+    /**
+     * Get team code
+     * @param username
+     * @return teamCode or -1 if team is not exist.
+     */
+    public Integer getTeamCodeByUsername(String username) {
+    	TeamController teamController = new TeamController(entityManagerFactory);
+    	Team team = teamController.findTeamByUsername(username);
+    	if(team != null) {
+    		return team.getTeamCode();
+    	}
+    	return -1;
+    }
+    public Team getUnUpdateTeam(String username) {
+		TeamController teamController = new TeamController(entityManagerFactory);
+    	return (Team) teamController.findTeamUnUpdateInfo(username);
+	}
+    public Boolean onSubmitCryptogramCode(String cryptogramCode, Integer teamCode) {
+    	CryptogramController cryptogramController = new CryptogramController(entityManagerFactory);
+    	Cryptogram cryptogram = cryptogramController.findCryptogram(cryptogramCode);
+    	if(cryptogram != null) {
+    		ScorePK scorePK = new ScorePK(cryptogram.getStationCode(), teamCode);
+    		ScoreController scoreController = new ScoreController(entityManagerFactory);
+    		Score score = scoreController.checkExist(scorePK);
+    		if (score == null) {
+				score = new Score();
+				score.setScorePK(scorePK);
+				score.setCompleted(false);
+				score.setNumOfHint(0);
+				Calendar calendar = Calendar.getInstance();
+				score.setDate(new Date(calendar.getTime().getTime()));
+				try {
+					scoreController.create(score);
+					return true;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					logger.error("onSubmitCryptogramCode", e);
+				}
+			}
+    	}
+    	//end if, return false onSubmitCryptogramCode
+		return false;
+    }
+    
+    public String getHint(Integer numOfHint, Integer teamCode, Integer stationCode) {
+    	CryptogramController cryptogramController = new CryptogramController(entityManagerFactory);
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), teamCode);
+    	Score score = scoreController.getScore(scorePK);
+    	Calendar calendar = Calendar.getInstance();
+    	Date date = new Date(calendar.getTime().getTime());
+    	long diff = (date.getTime() - score.getDate().getTime()) / (60*1000);
+    	Cryptogram cryptogram = cryptogramController.findCryptogramByStationCode(stationCode);
+    	String hints = "";
+    	if (cryptogram != null && score != null) {
+    		if (diff >= 20) {
+    			if(numOfHint > 0) hints = "Gợi ý 1: " + cryptogram.getHint1().toString();
+    			if(numOfHint > 1) hints = hints + "<br>Gợi ý 2: " + cryptogram.getHint2().toString();
+    			if(numOfHint > 2) hints = hints + "<br>Gợi ý 3: " + cryptogram.getHint3().toString();
+    			score.setNumOfHint(numOfHint);
+			} else {
+				hints = "Gợi ý chỉ được kích hoạt sau 20' kể từ lúc nhập mã mật thư";
+			}
+		}
+    	try {
+			scoreController.edit(score);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+    	return hints;
+    }
+    
+    public Boolean enrollStation(String enrollCode, Integer teamCode, Integer stationCode) {
+    	ScorePK scorePK = new ScorePK(stationCode, teamCode);
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	Score score = scoreController.getScoreWithEnrollCode(scorePK, enrollCode);
+    	if (score != null) {
+			score.setProcessing(true);
+			try {
+				scoreController.edit(score);
+				return true;
+			} catch (Exception e) {
+				logger.error("enrollStation:",e);
+				return false;
+			}
+		}
+    	return false;
     }
 }

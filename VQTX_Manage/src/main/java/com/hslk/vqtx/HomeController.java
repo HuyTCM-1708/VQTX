@@ -39,6 +39,8 @@ public class HomeController {
 	private final String adminPage = "adminPage";
 	/**Declare chiefPage .*/
 	private final String chiefPage = "chiefPage";
+	/**Declare team page .*/
+	private final String teamPage = "teamPage";
 	/**Initial log .*/
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 	/**Declare HomeService  .*/
@@ -87,22 +89,22 @@ public class HomeController {
 	    
 	    User user = homeService.checkLogin(username, password);
 	    if (user != null) {
+	    	HttpSession session = request.getSession();
+            session.setAttribute("USER", user);
 	        try {
 	            if (user.getRole()) {
-	                HttpSession session = request.getSession();
-	                session.setAttribute("USER", user);
 	                response.sendRedirect(adminPage);
 	            } else {
-	                HttpSession session = request.getSession();
-                    session.setAttribute("USER", user);
                     response.sendRedirect(chiefPage);
 	            }
 	        } catch (Exception ex) {
-	            try {
-	                response.sendError(permissionDeny, "You do not have permission to login this page!");
-	            } catch (IOException ex1) {
-	                LOGGER.error("Send redirect error occur exception!");
-	            }
+                try {
+                	response.sendRedirect(teamPage);
+				} catch (Exception e) {
+					LOGGER.error("Send redirect team error: ",e);
+					model.addAttribute("msg","Có lỗi xảy ra, hãy thử lại! Hoặc liên hệ admin để được hỗ trợ.");
+					return "home";
+				}
 	        }
 	    } else {
 	        //do nothing
@@ -303,9 +305,9 @@ public class HomeController {
         String score2 = request.getParameter("txtScore2");
         String score3 = request.getParameter("txtScore3");
         String bonus = request.getParameter("bonus");
-        String bonusNote = bonus + " " + request.getParameter("bonusNote");
+        String bonusNote = request.getParameter("bonusNote");
         String penalty = request.getParameter("penalty");
-        String penaltyNote = penalty + " " + request.getParameter("penaltyNote");
+        String penaltyNote = request.getParameter("penaltyNote");
         String note = request.getParameter("note");
         
         if (teamCode != "0") {
@@ -317,6 +319,7 @@ public class HomeController {
                     ex.printStackTrace();
                 }
 			} catch (Exception e) {
+				e.printStackTrace();
 				try {
 	                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Đã có lỗi khi nhập điểm, hãy thử lại lần nữa."
 	                		+ "\n Chú ý quy tắc nhập điểm");
@@ -338,7 +341,6 @@ public class HomeController {
         String teamCode = request.getParameter("teamCode");
         Score score = scoreService.getScore(stationCode, teamCode);
         String jsonData = scoreService.parseScoreToJSON(score);
-        System.out.println(jsonData);
         return jsonData;
     }
 }

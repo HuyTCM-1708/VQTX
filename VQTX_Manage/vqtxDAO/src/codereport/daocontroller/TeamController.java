@@ -133,7 +133,7 @@ public class TeamController implements Serializable {
      *            - team code.
      * @return team
      */
-    public Team findUser(String teamCode) {
+    public Team findUser(Integer teamCode) {
         EntityManager em = getEntityManager();
         return em.find(Team.class, teamCode);
     }
@@ -152,6 +152,35 @@ public class TeamController implements Serializable {
             return listTeam;
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
+            return null;
+        }
+    }
+    /**
+     * Get team findTeamByUsername.
+     * 
+     * @return list teams
+     */
+    public Team findTeamByUsername(String username) {
+        EntityManager em = getEntityManager();
+        try {
+            String jqpl = "Team.findTeamByUsername";
+            Query query = em.createNamedQuery(jqpl);
+            query.setParameter("username", username);
+            Team team = (Team) query.getSingleResult();
+            return team;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+    public Team findTeamUnUpdateInfo(String username) {
+        EntityManager em = getEntityManager();
+        try {
+            String jqpl = "Team.findTeamUnUpdateInfo";
+            Query query = em.createNamedQuery(jqpl);
+            query.setParameter("username", username);
+            Team team = (Team) query.getSingleResult();
+            return team;
+        } catch (Exception ex) {
             return null;
         }
     }

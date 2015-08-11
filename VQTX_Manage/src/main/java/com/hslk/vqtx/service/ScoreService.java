@@ -51,34 +51,78 @@ public class ScoreService {
             String bonus, String bonusNote, String penalty,String penaltyNote, String note) {
         ScoreController scoreController = new ScoreController(entityManagerFactory);
         ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
-        Score score = new Score();
-        score.setScorePK(scorePK);
-        if (score1 != "") {
-            score.setScore1(Integer.valueOf(score1));
-        }
-        if (score2 != "") {
-            score.setScore2(Integer.valueOf(score2));
-        }
-        if (score3 != "") {
-            score.setScore3(Integer.valueOf(score3));
-        }
-        if (penalty != "") {
-            score.setPenalty(Integer.valueOf(penalty));
-        }
-        score.setNote(note);
-        if (scoreController.checkExist(scorePK)) {
-            try {
-                scoreController.create(score);
-            } catch (Exception ex) {
-                logger.error("Can not add score!", ex);
+        Score score = scoreController.checkExist(scorePK);
+        if (score != null) {
+        	if (score1 != "") {
+                score.setScore1(Integer.valueOf(score1));
             }
-        } else {
+            if (score2 != "") {
+                score.setScore2(Integer.valueOf(score2));
+            }
+            if (score3 != "") {
+                score.setScore3(Integer.valueOf(score3));
+            }
+            if (bonus != "") {
+            	int existBonus;
+            	try {
+					existBonus = score.getBonus();
+				} catch (Exception e) {
+					existBonus = 0;
+				}
+            	score.setBonus(Integer.valueOf(bonus) + existBonus);
+            	String existBonusNote = score.getBonusNote();
+                if (existBonusNote == null ) {
+                	existBonusNote = "";
+				}
+            	score.setBonusNote(existBonusNote + bonus + ": " +  bonusNote + "<br>");
+            }
+            if (penalty != "") {
+            	int existPenalty;
+            	try {
+            		existPenalty = score.getPenalty();
+				} catch (Exception e) {
+					existPenalty = 0;
+				}
+                score.setPenalty(Integer.valueOf(penalty) + existPenalty);
+                String existPenaltyNote = score.getPenaltyNote();
+                if (existPenaltyNote == null ) {
+                	existPenaltyNote = "";
+				}
+                score.setPenaltyNote(existPenaltyNote + penalty + ": " + penaltyNote + "<br>");
+            }
+            score.setNote(note);
             try {
                 scoreController.edit(score);
             } catch (Exception ex) {
                 logger.error("Cannot update", ex);
             }
-        }
+		} else {
+			score = new Score();
+			score.setScorePK(scorePK);
+	        if (score1 != "") {
+	            score.setScore1(Integer.valueOf(score1));
+	        }
+	        if (score2 != "") {
+	            score.setScore2(Integer.valueOf(score2));
+	        }
+	        if (score3 != "") {
+	            score.setScore3(Integer.valueOf(score3));
+	        }
+	        if (bonus != "") {
+	        	score.setBonus(Integer.valueOf(bonus));
+	        	score.setBonusNote(bonus + ": " +  bonusNote + "<br>");
+	        }
+	        if (penalty != "") {
+	            score.setPenalty(Integer.valueOf(penalty));
+	            score.setPenaltyNote(penalty + ": " + penaltyNote + "<br>");
+	        }
+	        score.setNote(note);
+	        try {
+                scoreController.create(score);
+            } catch (Exception ex) {
+                logger.error("Can not add score!", ex);
+            }
+		}
     }
     /**
      * Get score.
@@ -90,6 +134,10 @@ public class ScoreService {
         ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
         ScoreController scoreController = new ScoreController(entityManagerFactory);
         return scoreController.getScore(scorePK);
+    }
+    public Score getCurrScore(Integer teamCode) {
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	return scoreController.getCurrScore(teamCode);
     }
     /**
      * Parse object Score to JSON type.
@@ -117,12 +165,17 @@ public class ScoreService {
         } catch (Exception ex) {
             score3 = "";
         }
-        
-        String penalty;
+        String bonusNote;
         try {
-            penalty = score.getPenalty().toString();
+			bonusNote = score.getBonusNote().toString();
+		} catch (Exception e) {
+			bonusNote = "";
+		}
+        String penaltyNote;
+        try {
+        	penaltyNote = score.getPenaltyNote().toString();
         } catch (Exception ex) {
-            penalty = "";
+        	penaltyNote = "";
         }
         
         String note;
@@ -135,7 +188,8 @@ public class ScoreService {
         String jsonData = "{ \"score1\": \"" + score1 + "\","
                 + "\"score2\": \"" + score2 + "\","
                         + "\"score3\": \"" + score3 + "\","
-                                + "\"penalty\": \"" + penalty + "\","
+                        + "\"bonusNote\": \"" + bonusNote + "\","
+                                + "\"penaltyNote\": \"" + penaltyNote + "\","
                                         + "\"note\": \"" + note + "\"}";
         
         return jsonData;

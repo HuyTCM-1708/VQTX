@@ -19,6 +19,7 @@
 package codereport.entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -36,7 +37,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Score")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Score.getScore" , query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK")
+    @NamedQuery(name = "Score.getScore" , query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK"),
+    @NamedQuery(name = "Score.getCurrScore" , query = "SELECT s FROM Score s WHERE s.scorePK.teamCode = :teamCode AND s.completed = :completed"),
+    @NamedQuery(name = "Score.getEnrollCode",
+    query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.enrollCode = :enrollCode")
+
 })
 public class Score implements Serializable {
 
@@ -71,9 +76,41 @@ public class Score implements Serializable {
     @Column(name = "Note")
     private String note;
     /**Date time when submit, get from server .*/
-//    @Column(name = "Date")
-//    private Date date;
+    @Column(name = "Date")
+    private Date date;
+    @Column(name = "Completed")
+    private boolean completed;
+    @Column(name = "numOfHint")
+    private Integer numOfHint;
+    @Column(name = "EnrollCode")
+    private String enrollCode;
+    @Column(name = "Processing")
+    private boolean processing;
     /**
+	 * @return the processing
+	 */
+	public boolean isProcessing() {
+		return processing;
+	}
+	/**
+	 * @param processing the processing to set
+	 */
+	public void setProcessing(boolean processing) {
+		this.processing = processing;
+	}
+	/**
+	 * @return the enrollCode
+	 */
+	public String getEnrollCode() {
+		return enrollCode;
+	}
+	/**
+	 * @param enrollCode the enrollCode to set
+	 */
+	public void setEnrollCode(String enrollCode) {
+		this.enrollCode = enrollCode;
+	}
+	/**
      * Get value of the scorePK.
      * @return the scorePK
      */
@@ -88,6 +125,18 @@ public class Score implements Serializable {
         this.scorePK = scorePK;
     }
     /**
+	 * @return the numOfHint
+	 */
+	public Integer getNumOfHint() {
+		return numOfHint;
+	}
+	/**
+	 * @param numOfHint the numOfHint to set
+	 */
+	public void setNumOfHint(Integer numOfHint) {
+		this.numOfHint = numOfHint;
+	}
+	/**
      * Get value of the score1.
      * @return the score1
      */
@@ -194,6 +243,7 @@ public class Score implements Serializable {
 	public void setPenaltyNote(String penaltyNote) {
 		this.penaltyNote = penaltyNote;
 	}
+	
 	@Override
     public int hashCode() {
         int hash = 0;
@@ -212,4 +262,29 @@ public class Score implements Serializable {
         }
         return true;
     }
+	/**
+	 * @return the completed
+	 */
+	public boolean isCompleted() {
+		return completed;
+	}
+	/**
+	 * @param completed the completed to set
+	 */
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+	/**
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 }

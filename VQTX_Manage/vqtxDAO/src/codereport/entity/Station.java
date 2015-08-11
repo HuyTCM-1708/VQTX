@@ -68,14 +68,8 @@ public class Station implements Serializable {
         this.chief = chief;
     }
     /**Chief's name .*/
-    @Column(name = "ChiefName")
-    private String chiefName;
-    /**Chief's phone .*/
-    @Column(name = "ChiefPhone")
-    private String chiefPhone;
-    /**Station place .*/
-    @Column(name = "Place")
-    private String place;
+    @Column(name = "EnrollCode")
+    private String enrollCode;
     /**
      * Get value of the stationCode.
      * @return the stationCode
@@ -90,46 +84,16 @@ public class Station implements Serializable {
     public void setStationCode(Integer stationCode) {
         this.stationCode = stationCode;
     }
-    /**
-     * Get value of the chiefName.
-     * @return the chiefName
-     */
-    public String getChiefName() {
-        return chiefName;
-    }
-    /**
-     * Set value for the chiefName.
-     * @param chiefName the chiefName to set
-     */
-    public void setChiefName(String chiefName) {
-        this.chiefName = chiefName;
-    }
-    /**
-     * Get value of the chiefPhone.
-     * @return the chiefPhone
-     */
-    public String getChiefPhone() {
-        return chiefPhone;
-    }
-    /**
-     * Set value for the chiefPhone.
-     * @param chiefPhone the chiefPhone to set
-     */
-    public void setChiefPhone(String chiefPhone) {
-        this.chiefPhone = chiefPhone;
-    }
-    /**
-     * Get value of the place.
-     * @return the place
-     */
-    public String getPlace() {
-        return place;
-    }
-    /**
-     * Set value for the place.
-     * @param place the place to set
-     */
-    public void setPlace(String place) {
-        this.place = place;
-    }
+	/**
+	 * @return the enrollCode
+	 */
+	public String getEnrollCode() {
+		return enrollCode;
+	}
+	/**
+	 * @param enrollCode the enrollCode to set
+	 */
+	public void setEnrollCode(String enrollCode) {
+		this.enrollCode = enrollCode;
+	}
 }

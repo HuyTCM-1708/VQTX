@@ -7,13 +7,16 @@
         <class>codereport.entity.Station</class>
         <class>codereport.entity.Team</class>
         <class>codereport.entity.Score</class>
+        <class>codereport.entity.Cryptogram</class>
 <!--         For MYSQL -->
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://45.32.254.108:3306/hslk_vqtx" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hslk_vqtx" />
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
             <property name="javax.persistence.jdbc.user" value="root" />
-            <property name="javax.persistence.jdbc.password" value="0n4verage" />
-            <property name="eclipselink.ddl-generation" value="create-tables" />
+            <property name="javax.persistence.jdbc.password" value="12345" />
+            <!-- 
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+             -->
         </properties>
         <!-- For HSQL Server Mode -->
         <!-- <properties> -->

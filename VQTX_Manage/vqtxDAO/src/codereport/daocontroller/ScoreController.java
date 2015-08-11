@@ -35,94 +35,141 @@ import codereport.entity.ScorePK;
  */
 public class ScoreController implements Serializable {
 
-    /** .*/
-    private static final long serialVersionUID = 1L;
-    /**Initial Logger .*/
-    private static final Logger LOGGER = Logger.getLogger(ScoreController.class);
-    /**Declare entity manager factory .*/
-    private EntityManagerFactory emf = null;
-    
-    /**
-     * Constructor ScoreController.
-     * @param emf - entity manager factory.
-     */
-    public ScoreController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    /**
-     * @return entity manager.
-     */
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-    /**
-     * Create new score.
-     * @param score - object score.
-     * @throws Exception - exception.
-     */
-    public void create(Score score) throws Exception {
-        EntityManager entityManager = null;
-        try {
-            entityManager = getEntityManager();
-            entityManager.getTransaction().begin();
-            entityManager.persist(score);
-            entityManager.getTransaction().commit();
-        } catch (Exception ex) {
-            entityManager.getTransaction().rollback();
-            throw new Exception(ex);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
-    }
-    /**
-     * Update score.
-     * @param score - score.
-     * @throws Exception - exception.
-     */
-    public void edit(Score score) throws Exception {
-        EntityManager entityManager = null;
-        try {
-            entityManager = getEntityManager();
-            entityManager.getTransaction().begin();
-            score = entityManager.merge(score);
-            entityManager.getTransaction().commit();
-        } catch (Exception ex) {
-            throw new Exception(ex);
-        }
-    }
-    /**
-     * Check if record score is existed.
-     * @param scorePK - scorePK.
-     * @return score == null.
-     */
-    public boolean checkExist(ScorePK scorePK) {
-        EntityManager entityManager = null;
-        try {
-            entityManager = getEntityManager();
-            Score score = entityManager.find(Score.class, scorePK);
-            return score == null;
-        } catch (Exception ex) {
-           LOGGER.error("Exception check exist", ex);
-           return false;
-        }
-    }
-    /**
-     * Get score by score PK.
-     * @param scorePK - scorePK.
-     * @return score.
-     */
-    public Score getScore(ScorePK scorePK) {
-        EntityManager entityManager = null;
-        try {
-            entityManager = getEntityManager();
-            String jqpl = "Score.getScore";
-            Query query = entityManager.createNamedQuery(jqpl);
-            query.setParameter("scorePK", scorePK);
-            return (Score) query.getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
+	/** . */
+	private static final long serialVersionUID = 1L;
+	/** Initial Logger . */
+	private static final Logger LOGGER = Logger
+			.getLogger(ScoreController.class);
+	/** Declare entity manager factory . */
+	private EntityManagerFactory emf = null;
+
+	/**
+	 * Constructor ScoreController.
+	 * 
+	 * @param emf
+	 *            - entity manager factory.
+	 */
+	public ScoreController(EntityManagerFactory emf) {
+		this.emf = emf;
+	}
+
+	/**
+	 * @return entity manager.
+	 */
+	public EntityManager getEntityManager() {
+		return emf.createEntityManager();
+	}
+
+	/**
+	 * Create new score.
+	 * 
+	 * @param score
+	 *            - object score.
+	 * @throws Exception
+	 *             - exception.
+	 */
+	public void create(Score score) throws Exception {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			entityManager.getTransaction().begin();
+			entityManager.persist(score);
+			entityManager.getTransaction().commit();
+		} catch (Exception ex) {
+			entityManager.getTransaction().rollback();
+			throw new Exception(ex);
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
+		}
+	}
+
+	/**
+	 * Update score.
+	 * 
+	 * @param score
+	 *            - score.
+	 * @throws Exception
+	 *             - exception.
+	 */
+	public void edit(Score score) throws Exception {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			entityManager.getTransaction().begin();
+			score = entityManager.merge(score);
+			entityManager.getTransaction().commit();
+		} catch (Exception ex) {
+			throw new Exception(ex);
+		}
+	}
+
+	/**
+	 * Check if record score is existed.
+	 * 
+	 * @param scorePK
+	 *            - scorePK.
+	 * @return score == null.
+	 */
+	public Score checkExist(ScorePK scorePK) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			Score score = entityManager.find(Score.class, scorePK);
+			return score;
+		} catch (Exception ex) {
+			LOGGER.error("Exception check exist", ex);
+			return null;
+		}
+	}
+
+	/**
+	 * Get score by score PK.
+	 * 
+	 * @param scorePK
+	 *            - scorePK.
+	 * @return score.
+	 */
+	public Score getScore(ScorePK scorePK) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String jqpl = "Score.getScore";
+			Query query = entityManager.createNamedQuery(jqpl);
+			query.setParameter("scorePK", scorePK);
+			return (Score) query.getSingleResult();
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	public Score getCurrScore(Integer teamCode) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String jqpl = "Score.getCurrScore";
+			Query query = entityManager.createNamedQuery(jqpl);
+			query.setParameter("teamCode", teamCode);
+			query.setParameter("completed", false);
+			return (Score) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public Score getScoreWithEnrollCode(ScorePK scorePK,String enrollCode) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String jqpl = "Score.getEnrollCode";
+			Query query = entityManager.createNamedQuery(jqpl);
+			query.setParameter("scorePK", scorePK);
+			query.setParameter("enrollCode", enrollCode);
+			return (Score) query.getSingleResult();
+		} catch (Exception e) {
+			LOGGER.error("getScoreWithEnrollCode:", e);
+			return null;
+		}
+	}
 }
