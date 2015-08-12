@@ -36,8 +36,6 @@ import codereport.entity.User;
  *
  */
 public class StationService {
-    /**Declare max size of random password .*/
-    private final int sizePass = 7;
     /** For logging. */
     private static Logger logger = Logger.getLogger(StationService.class);
     /**Initial Entity Manager Factory .*/
@@ -65,39 +63,5 @@ public class StationService {
     public List<Station> listAllStation() {
         StationController stationController = new StationController(entityManagerFactory);
         return stationController.findStationEntity();
-    }
-    /**
-     * Auto generate chief account.
-     */
-    public void generateAcc() {
-        List<Station> listStations = listAllStation();
-        int size = listStations.size();
-        for (int i = 0; i < size; i++) {
-            Station station = (Station) listStations.get(i);
-            if (station.getChief() == null) {
-                //Initial new user
-                User chief = new User();
-                String username = "VQTX_TRAM_" + station.getStationCode();
-                chief.setUsername(username);
-                //set random password
-                String password = UUID.randomUUID().toString().substring(0, sizePass);
-                chief.setPassword(password);
-                chief.setRole(false);
-                
-                UserController userController = new UserController(entityManagerFactory);
-                try {
-                    userController.create(chief);
-                    //add chief into station
-                    station.setChief(chief.getUsername());
-                    
-                    StationController stationController = new StationController(entityManagerFactory);
-                    stationController.edit(station);
-                } catch (Exception ex) {
-                    logger.error("Generate Chief account error", ex);
-                }
-            } else {
-                //do nothing
-            }
-        }
     }
 }

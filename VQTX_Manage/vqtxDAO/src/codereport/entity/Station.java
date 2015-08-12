@@ -53,6 +53,10 @@ public class Station implements Serializable {
     /**Chief .*/
     @Column(name = "Chief")
     private String chief;
+    @Column(name = "StationName")
+    private String stationName;
+    @Column(name = "Place")
+    private String place;
     /**
      * Get value of the chief.
      * @return the chief
@@ -95,5 +99,18 @@ public class Station implements Serializable {
 	 */
 	public void setEnrollCode(String enrollCode) {
 		this.enrollCode = enrollCode;
+	}
+	
+	public String getStationName() {
+		return stationName;
+	}
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+	public String getPlace() {
+		return place;
+	}
+	public void setPlace(String place) {
+		this.place = place;
 	}
 }

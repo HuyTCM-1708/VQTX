@@ -167,13 +167,13 @@ public class HomeController {
                 List<Team> listTeams = teamService.listAllTeam();
                 model.addAttribute("listTeams", listTeams);
                 
-//                Cookie[] cookies = request.getCookies();
-//                for (Cookie cookie : cookies) {
-//                    if (cookie.getName().equals("currStation")) {
-//                        List<Integer> listTeams = teamService.listTeams(cookie.getValue());
-//                        model.addAttribute("listTeams", listTeams);
-//                    }
-//                }
+                Cookie[] cookies = request.getCookies();
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("currStation")) {
+                        Station station = scoreService.getCurrStation(Integer.valueOf(cookie.getValue())); 
+                        model.addAttribute("CURRSTATION", station);
+                    }
+                }
             }
         } catch (Exception ex) {
             try {
@@ -226,20 +226,20 @@ public class HomeController {
             }
         }
     }
-    /**
-     * Generate Chief Account.
-     * @param response - response.
-     */
-    @RequestMapping(value = "/generateChiefAcc")
-    public void generateChiefAcc(HttpServletResponse response) {
-        stationService.generateAcc();
-        try {
-            response.sendRedirect(adminPage);
-        } catch (IOException ex) {
-            // TODO Auto-generated catch block
-            ex.printStackTrace();
-        }
-    }
+//    /**
+//     * Generate Chief Account.
+//     * @param response - response.
+//     */
+//    @RequestMapping(value = "/generateChiefAcc")
+//    public void generateChiefAcc(HttpServletResponse response) {
+//        stationService.generateAcc();
+//        try {
+//            response.sendRedirect(adminPage);
+//        } catch (IOException ex) {
+//            // TODO Auto-generated catch block
+//            ex.printStackTrace();
+//        }
+//    }
     /**
      * Generate Team Account.
      * @param response - response.
@@ -299,6 +299,9 @@ public class HomeController {
      */
     @RequestMapping(value = "addScore")
     public void addScore(HttpServletRequest request, HttpServletResponse response) {
+    	HttpSession session = request.getSession();
+    	User user = (User) session.getAttribute("USER");
+    	
         String stationCode = request.getParameter("stationCode");
         String teamCode = request.getParameter("teamCode");
         String score1 = request.getParameter("txtScore1");
@@ -312,7 +315,7 @@ public class HomeController {
         
         if (teamCode != "0") {
         	try {
-        		scoreService.addScore(stationCode, teamCode, score1, score2, score3, bonus, bonusNote, penalty, penaltyNote, note);
+        		scoreService.addScore(stationCode, teamCode, score1, score2, score3, bonus, bonusNote, penalty, penaltyNote, note, user.getUsername());
         		try {
                     response.sendRedirect(chiefPage);
                 } catch (IOException ex) {

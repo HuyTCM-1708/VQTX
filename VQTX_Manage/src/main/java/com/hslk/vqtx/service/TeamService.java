@@ -30,11 +30,13 @@ import org.apache.log4j.Logger;
 
 import codereport.daocontroller.CryptogramController;
 import codereport.daocontroller.ScoreController;
+import codereport.daocontroller.StationController;
 import codereport.daocontroller.TeamController;
 import codereport.daocontroller.UserController;
 import codereport.entity.Cryptogram;
 import codereport.entity.Score;
 import codereport.entity.ScorePK;
+import codereport.entity.Station;
 import codereport.entity.Team;
 import codereport.entity.User;
 
@@ -49,7 +51,7 @@ public class TeamService {
     private static Logger logger = Logger.getLogger(TeamService.class);
     /**Initial Entity Manager Factory .*/
     private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DaoGeneratePU");
-
+    
     /**
      * Add new teams.
      * @param noTeam - number of team.
@@ -93,7 +95,12 @@ public class TeamService {
             if (team.getTeam() == null) {
                 //Initial new user
                 User user = new User();
-                String username = "VQTX_DOI_" + team.getTeamCode();
+                String username;
+                if(i < 10) {
+                	username = "VQTX0" + team.getTeamCode();
+                } else {
+					username = "VQTX" + team.getTeamCode();
+				}
                 user.setUsername(username);
                 //set random password
                 String password = UUID.randomUUID().toString().substring(0, sizePass);
@@ -141,7 +148,15 @@ public class TeamService {
 					score.setScorePK(scorePK);
 					score.setCompleted(true);
 					score.setProcessing(true);
-					score.setNumOfHint(0);
+					score.setNumOfHint(3);
+					Calendar calendar = Calendar.getInstance();
+					score.setDate(new Date(calendar.getTime().getTime()));
+					
+					StationController stationController = new StationController(entityManagerFactory);
+					Station station = stationController.findStation(score.getScorePK().getStationCode());
+					score.setEnrollCode(station.getEnrollCode());
+					
+					score.setLog("Initial at: " + new Date(calendar.getTime().getTime()));
 				}
 				scoreController.create(score);
 				return true;
@@ -169,6 +184,12 @@ public class TeamService {
 		TeamController teamController = new TeamController(entityManagerFactory);
     	return (Team) teamController.findTeamUnUpdateInfo(username);
 	}
+    
+    public List<Score> getScoreByTeamCode(Integer teamCode) {
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	return scoreController.getAllScoreOfTeam(teamCode);
+    }
+    
     public Boolean onSubmitCryptogramCode(String cryptogramCode, Integer teamCode) {
     	CryptogramController cryptogramController = new CryptogramController(entityManagerFactory);
     	Cryptogram cryptogram = cryptogramController.findCryptogram(cryptogramCode);
@@ -183,11 +204,16 @@ public class TeamService {
 				score.setNumOfHint(0);
 				Calendar calendar = Calendar.getInstance();
 				score.setDate(new Date(calendar.getTime().getTime()));
+				
+				StationController stationController = new StationController(entityManagerFactory);
+				Station station = stationController.findStation(score.getScorePK().getStationCode());
+				score.setEnrollCode(station.getEnrollCode());
+				
+				score.setLog("Initial at: " + new Date(calendar.getTime().getTime()));
 				try {
 					scoreController.create(score);
 					return true;
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					logger.error("onSubmitCryptogramCode", e);
 				}
 			}
@@ -229,12 +255,30 @@ public class TeamService {
     	ScoreController scoreController = new ScoreController(entityManagerFactory);
     	Score score = scoreController.getScoreWithEnrollCode(scorePK, enrollCode);
     	if (score != null) {
+    		score.setCryptogramScore(50 - score.getNumOfHint()*10);
 			score.setProcessing(true);
 			try {
 				scoreController.edit(score);
 				return true;
 			} catch (Exception e) {
 				logger.error("enrollStation:",e);
+				return false;
+			}
+		}
+    	return false;
+    }
+    public Boolean overStation(String overCode, Integer teamCode, Integer stationCode) {
+    	ScorePK scorePK = new ScorePK(stationCode, teamCode);
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	Score score = scoreController.getScoreWithOverCode(scorePK, overCode);
+    	if (score != null) {
+			score.setProcessing(false);
+			score.setCompleted(true);
+			try {
+				scoreController.edit(score);
+				return true;
+			} catch (Exception e) {
+				logger.error("Over Station:",e);
 				return false;
 			}
 		}

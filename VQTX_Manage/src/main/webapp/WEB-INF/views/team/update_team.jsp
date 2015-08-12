@@ -10,7 +10,8 @@
 <title>Thay đổi thông tin đội chơi</title>
 </head>
 <body>
-	<form action="updateTeam">
+<h4>Cập nhật thông tin đội chơi:</h4>
+	<form action="updateTeam" onsubmit="return confirm('Thông tin đội sẽ không được thay đổi\n Bạn đã chắc chắn mọi thông tin là chính xác?');">
 		<table>
 			<tr>
 				<th>Tên đội:</th>
@@ -22,7 +23,7 @@
 			</tr>
 			<tr>
 				<th>SĐT đội trưởng:</th>
-				<td><input type="text" name="phone">
+				<td><input type="text" name="phone"></td>
 			</tr>
 			<tr>
 				<th>Thành viên 1:</th>
@@ -30,27 +31,27 @@
 			</tr>
 			<tr>
 				<th>Thành viên 2:</th>
-				<td><input type="text" name="member1"></td>
+				<td><input type="text" name="member2"></td>
 			</tr>
 			<tr>
 				<th>Thành viên 3:</th>
-				<td><input type="text" name="member1"></td>
+				<td><input type="text" name="member3"></td>
 			</tr>
 			<tr>
 				<th>Thành viên 4:</th>
-				<td><input type="text" name="member1"></td>
+				<td><input type="text" name="member4"></td>
 			</tr>
 			<tr>
 				<th>Thành viên 5:</th>
-				<td><input type="text" name="member1"></td>
+				<td><input type="text" name="member5"></td>
 			</tr>
 			<tr>
 				<th>Thành viên 6:</th>
-				<td><input type="text" name="member1"></td>
+				<td><input type="text" name="member6"></td>
 			</tr>
 			<tr>
 				<th>Thành viên 7:</th>
-				<td><input type="text" name="member1"></td>
+				<td><input type="text" name="member7"></td>
 			</tr>
 			<tr>
 				<th></th>

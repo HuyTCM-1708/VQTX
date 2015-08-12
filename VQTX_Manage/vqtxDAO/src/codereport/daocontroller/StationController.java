@@ -127,7 +127,7 @@ public class StationController implements Serializable {
      * @param stationCode - station code. 
      * @return station
      */
-    public Station findUser(String stationCode) {
+    public Station findStation(Integer stationCode) {
         EntityManager em = getEntityManager();
         return em.find(Station.class, stationCode);
     }
