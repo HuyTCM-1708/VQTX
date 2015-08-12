@@ -25,9 +25,18 @@ table, th {
 	<!-- Menu -->
 	<table>
 		<tr>
-			<th style="background-color: blue;">Trang chủ</th>
-			<th>Bảng điểm đội</th>
-			<th>Bảng tổng sắp</th>
+			<th>
+				<c:url var="team_home" value="teamPage"></c:url>
+				<a href="${team_home}">Trang chủ</a>
+			</th>
+			<th>
+				<c:url var="team_score" value="teamScore"></c:url>
+				<a href="${team_score}">Bảng điểm đội</a>
+			</th>
+			<th style="background-color: blue;">
+				<c:url var="finalScore" value="finalScore"></c:url>
+				<a href="${finalScore}">Bảng tổng sắp</a>
+			</th>
 		</tr>
 	</table>
 	<!-- Content -->
@@ -48,7 +57,10 @@ table, th {
 	</c:if>
 	<c:if test="${not empty SCORE}">
 		<c:if test="${not SCORE.processing}">
-			<form action="enrollStation">
+		<c:if test="${not empty CURRSTATION}">
+			<span><font color="blue">Hướng dẫn đường đi: ${CURRSTATION.place}</font></span>
+		</c:if>
+			<form action="enrollStation" method="post">
 				<input type="text" name="enrollCode" placeholder="Mã nhập trạm" />
 				<input type="hidden" name="stationCode"
 					value="${SCORE.scorePK.stationCode}" />
@@ -68,7 +80,16 @@ table, th {
 			</c:if>
 		</c:if>
 		<c:if test="${SCORE.processing}">
+		<c:if test="${not empty CURRSTATION}">
+			<span><font color="blue">Chào mừng bạn đến trạm: ${CURRSTATION.stationName}</font></span>
+		</c:if>
 			<h1>Đang thực hiện thử thách...</h1>
+			<form action="overStation" method="post">
+				Mã xuất trạm: <input type ="text" name="overCode" placeholder="Mã xuất trạm" />
+				<input type="hidden" name="stationCode"
+					value="${SCORE.scorePK.stationCode}" />
+				<button>Xác nhận</button>
+			</form>
 		</c:if>
 	</c:if>
 </body>

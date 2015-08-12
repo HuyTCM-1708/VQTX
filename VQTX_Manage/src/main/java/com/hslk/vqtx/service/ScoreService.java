@@ -18,14 +18,20 @@
  */
 package com.hslk.vqtx.service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
 
 import codereport.daocontroller.ScoreController;
+import codereport.daocontroller.StationController;
+import codereport.daocontroller.TeamController;
 import codereport.entity.Score;
 import codereport.entity.ScorePK;
+import codereport.entity.Station;
 
 /**
  * @author HuyTCM
@@ -48,19 +54,23 @@ public class ScoreService {
      * @param note - note (optional)
      */
     public void addScore(String stationCode, String teamCode, String score1, String score2, String score3,
-            String bonus, String bonusNote, String penalty,String penaltyNote, String note) {
+            String bonus, String bonusNote, String penalty,String penaltyNote, String note, String username) {
         ScoreController scoreController = new ScoreController(entityManagerFactory);
         ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
         Score score = scoreController.checkExist(scorePK);
+        String log = score.getLog() + " <br>User:" + username;
         if (score != null) {
         	if (score1 != "") {
                 score.setScore1(Integer.valueOf(score1));
+                log += " - Score1:" + score1;
             }
             if (score2 != "") {
                 score.setScore2(Integer.valueOf(score2));
+                log += " - Score2:" + score2;
             }
             if (score3 != "") {
                 score.setScore3(Integer.valueOf(score3));
+                log += " - Score3:" + score3;
             }
             if (bonus != "") {
             	int existBonus;
@@ -75,6 +85,8 @@ public class ScoreService {
                 	existBonusNote = "";
 				}
             	score.setBonusNote(existBonusNote + bonus + ": " +  bonusNote + "<br>");
+            	
+            	log += "-Bonus: " + score.getBonusNote();
             }
             if (penalty != "") {
             	int existPenalty;
@@ -89,38 +101,24 @@ public class ScoreService {
                 	existPenaltyNote = "";
 				}
                 score.setPenaltyNote(existPenaltyNote + penalty + ": " + penaltyNote + "<br>");
+                
+                log += "-Penalty: " + score.getPenaltyNote();
             }
             score.setNote(note);
+            
+            if (note != null) log += "- Note: " + note;
+            
+            //Calculate sum score.
+            Integer sumScore = Integer.valueOf(score.getScore1()) + Integer.valueOf(score.getScore2()) + Integer.valueOf(score.getScore3())
+            					+ Integer.valueOf(score.getBonus()) - Integer.valueOf(score.getPenalty());
+            score.setSumScore(sumScore);
+            
+            score.setLog(log);
+            
             try {
                 scoreController.edit(score);
             } catch (Exception ex) {
                 logger.error("Cannot update", ex);
-            }
-		} else {
-			score = new Score();
-			score.setScorePK(scorePK);
-	        if (score1 != "") {
-	            score.setScore1(Integer.valueOf(score1));
-	        }
-	        if (score2 != "") {
-	            score.setScore2(Integer.valueOf(score2));
-	        }
-	        if (score3 != "") {
-	            score.setScore3(Integer.valueOf(score3));
-	        }
-	        if (bonus != "") {
-	        	score.setBonus(Integer.valueOf(bonus));
-	        	score.setBonusNote(bonus + ": " +  bonusNote + "<br>");
-	        }
-	        if (penalty != "") {
-	            score.setPenalty(Integer.valueOf(penalty));
-	            score.setPenaltyNote(penalty + ": " + penaltyNote + "<br>");
-	        }
-	        score.setNote(note);
-	        try {
-                scoreController.create(score);
-            } catch (Exception ex) {
-                logger.error("Can not add score!", ex);
             }
 		}
     }
@@ -138,6 +136,10 @@ public class ScoreService {
     public Score getCurrScore(Integer teamCode) {
     	ScoreController scoreController = new ScoreController(entityManagerFactory);
     	return scoreController.getCurrScore(teamCode);
+    }
+    public Station getCurrStation(Integer stationCode) {
+    	StationController stationController = new StationController(entityManagerFactory);
+    	return stationController.findStation(stationCode);
     }
     /**
      * Parse object Score to JSON type.
@@ -193,5 +195,19 @@ public class ScoreService {
                                         + "\"note\": \"" + note + "\"}";
         
         return jsonData;
+    }
+    
+    public HashMap<String, Integer> finallyScore() {
+    	ScoreController scoreController = new ScoreController(entityManagerFactory);
+    	TeamController teamController = new TeamController(entityManagerFactory);
+    	HashMap<String, Integer> finalScore = new HashMap<String, Integer>();
+    	List<Object[]> listResult = scoreController.getFinalScore();
+    	for (Object[] result : listResult) {
+    		Integer teamCode = Integer.valueOf((String) result[0]);
+    		String team = teamController.findUser(teamCode).getTeam();
+    		Integer score = Integer.valueOf((String) result[1]);
+    		finalScore.put(team, score);
+    	}
+    	return finalScore;
     }
 }

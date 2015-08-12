@@ -118,7 +118,7 @@
                         <th><select name="teamCode" onchange="getScore(${cookie.currStation.value},this.value)">
                                 <option value="0"></option>
                                 <c:forEach var="team" items="${listTeams}">
-                                    <option value="${team.teamCode}">VQTX_DOI_${team.teamCode}</option>
+                                    <option value="${team.teamCode}">${team.team}</option>
                                 </c:forEach>
                         </select></th>
                     </tr>
@@ -172,7 +172,7 @@
             <form action="chooseStation" method="post">
                 Mã trạm: <select name="slStation">
                     <c:forEach var="station" items="${listStations}">
-                        <option value="${station.stationCode}">${station.chief}</option>
+                        <option value="${station.stationCode}">${station.stationName}</option>
                     </c:forEach>
                 </select> <input type="submit" value="Chọn trạm" />
             </form>

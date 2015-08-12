@@ -40,8 +40,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Score.getScore" , query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK"),
     @NamedQuery(name = "Score.getCurrScore" , query = "SELECT s FROM Score s WHERE s.scorePK.teamCode = :teamCode AND s.completed = :completed"),
     @NamedQuery(name = "Score.getEnrollCode",
-    query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.enrollCode = :enrollCode")
-
+    query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.enrollCode = :enrollCode"),
+    @NamedQuery(name = "Score.getOverCode",
+    query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.overCode = :overCode")
 })
 public class Score implements Serializable {
 
@@ -84,8 +85,16 @@ public class Score implements Serializable {
     private Integer numOfHint;
     @Column(name = "EnrollCode")
     private String enrollCode;
+    @Column(name = "OverCode")
+    private String overCode;
     @Column(name = "Processing")
     private boolean processing;
+    @Column(name = "CryptogramScore")
+    private Integer cryptogramScore;
+    @Column(name = "SumScore")
+    private Integer sumScore;
+    @Column(name = "LOG")
+    private String log;
     /**
 	 * @return the processing
 	 */
@@ -286,5 +295,28 @@ public class Score implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+	public Integer getCryptogramScore() {
+		return cryptogramScore;
+	}
+	public void setCryptogramScore(Integer cryptogramScore) {
+		this.cryptogramScore = cryptogramScore;
+	}
+	public Integer getSumScore() {
+		return sumScore;
+	}
+	public void setSumScore(Integer sumScore) {
+		this.sumScore = sumScore;
+	}
+	public String getLog() {
+		return log;
+	}
+	public void setLog(String log) {
+		this.log = log;
+	}
+	public String getOverCode() {
+		return overCode;
+	}
+	public void setOverCode(String overCode) {
+		this.overCode = overCode;
+	}
 }

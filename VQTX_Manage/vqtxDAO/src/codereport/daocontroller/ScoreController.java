@@ -19,6 +19,7 @@
 package codereport.daocontroller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -169,6 +170,52 @@ public class ScoreController implements Serializable {
 			return (Score) query.getSingleResult();
 		} catch (Exception e) {
 			LOGGER.error("getScoreWithEnrollCode:", e);
+			return null;
+		}
+	}
+	public Score getScoreWithOverCode(ScorePK scorePK,String overCode) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String jqpl = "Score.getOverCode";
+			Query query = entityManager.createNamedQuery(jqpl);
+			query.setParameter("scorePK", scorePK);
+			query.setParameter("overCode", overCode);
+			return (Score) query.getSingleResult();
+		} catch (Exception e) {
+			LOGGER.error("getScoreWithOverCode:", e);
+			return null;
+		}
+	}
+	public List<Score> getAllScoreOfTeam(Integer teamCode) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String jqpl = "Score.getCurrScore";
+			Query query = entityManager.createNamedQuery(jqpl);
+			query.setParameter("teamCode", teamCode);
+			query.setParameter("completed", true);
+			@SuppressWarnings("unchecked")
+			List<Score> listScores = query.getResultList();
+			return listScores;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFinalScore() {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String sql = "SELECT s.scorePK.teamCode, SUM(s.sumScore)"
+						+"FROM Score s "
+						+"GROUP BY s.scorePK.teamCode"
+						+"ORDER BY SUM(s.sumScore) ASC";
+			Query query = entityManager.createQuery(sql);
+			List<Object[]> result = query.getResultList();
+			return result;
+		} catch (Exception e) {
 			return null;
 		}
 	}
