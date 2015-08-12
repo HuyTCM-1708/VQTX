@@ -25,7 +25,7 @@ table, th {
 	<!-- Menu -->
 	<table>
 		<tr>
-			<th>
+			<th style="background-color: green;">
 				<c:url var="team_home" value="teamPage"></c:url>
 				<a href="${team_home}">Trang chủ</a>
 			</th>
@@ -33,7 +33,7 @@ table, th {
 				<c:url var="team_score" value="teamScore"></c:url>
 				<a href="${team_score}">Bảng điểm đội</a>
 			</th>
-			<th style="background-color: blue;">
+			<th>
 				<c:url var="finalScore" value="finalScore"></c:url>
 				<a href="${finalScore}">Bảng tổng sắp</a>
 			</th>

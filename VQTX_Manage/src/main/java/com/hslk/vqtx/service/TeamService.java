@@ -104,7 +104,9 @@ public class TeamService {
                 user.setUsername(username);
                 //set random password
                 String password = UUID.randomUUID().toString().substring(0, sizePass);
-                user.setPassword(password);
+                //TODO: edit later
+                //user.setPassword(password);
+                user.setPassword("12345678");
                 user.setRole(null);
                 
                 UserController userController = new UserController(entityManagerFactory);
@@ -141,7 +143,6 @@ public class TeamService {
 			team.setMember6(member6);
 			team.setMember7(member7);
 			try {
-				teamController.edit(team);
 				Score score = scoreController.checkExist(scorePK);
 				if (score == null) {
 					score = new Score();
@@ -152,13 +153,13 @@ public class TeamService {
 					Calendar calendar = Calendar.getInstance();
 					score.setDate(new Date(calendar.getTime().getTime()));
 					
-					StationController stationController = new StationController(entityManagerFactory);
-					Station station = stationController.findStation(score.getScorePK().getStationCode());
-					score.setEnrollCode(station.getEnrollCode());
+					score.setEnrollCode("abc");
+					score.setOverCode("abc");
 					
 					score.setLog("Initial at: " + new Date(calendar.getTime().getTime()));
 				}
 				scoreController.create(score);
+				teamController.edit(team);
 				return true;
 			} catch (Exception e) {
 				logger.error("Update team:",e);
@@ -193,6 +194,7 @@ public class TeamService {
     public Boolean onSubmitCryptogramCode(String cryptogramCode, Integer teamCode) {
     	CryptogramController cryptogramController = new CryptogramController(entityManagerFactory);
     	Cryptogram cryptogram = cryptogramController.findCryptogram(cryptogramCode);
+    	System.out.println(cryptogram.getCryptogramCode());
     	if(cryptogram != null) {
     		ScorePK scorePK = new ScorePK(cryptogram.getStationCode(), teamCode);
     		ScoreController scoreController = new ScoreController(entityManagerFactory);
@@ -206,8 +208,9 @@ public class TeamService {
 				score.setDate(new Date(calendar.getTime().getTime()));
 				
 				StationController stationController = new StationController(entityManagerFactory);
-				Station station = stationController.findStation(score.getScorePK().getStationCode());
+				Station station = stationController.findStation(scorePK.getStationCode());
 				score.setEnrollCode(station.getEnrollCode());
+				score.setOverCode(station.getOverCode());
 				
 				score.setLog("Initial at: " + new Date(calendar.getTime().getTime()));
 				try {
@@ -233,7 +236,8 @@ public class TeamService {
     	Cryptogram cryptogram = cryptogramController.findCryptogramByStationCode(stationCode);
     	String hints = "";
     	if (cryptogram != null && score != null) {
-    		if (diff >= 20) {
+    		System.out.println(diff);
+    		if (diff >= 1) {
     			if(numOfHint > 0) hints = "Gợi ý 1: " + cryptogram.getHint1().toString();
     			if(numOfHint > 1) hints = hints + "<br>Gợi ý 2: " + cryptogram.getHint2().toString();
     			if(numOfHint > 2) hints = hints + "<br>Gợi ý 3: " + cryptogram.getHint3().toString();

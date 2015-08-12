@@ -67,18 +67,22 @@ public class ScoreService {
 		ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
 		Score score = scoreController.checkExist(scorePK);
 		String log = score.getLog() + " <br>User:" + username;
+		Integer sumScore = score.getCryptogramScore();
 		if (score != null) {
 			if (score1 != "") {
 				score.setScore1(Integer.valueOf(score1));
 				log += " - Score1:" + score1;
+				sumScore += Integer.valueOf(score1);
 			}
 			if (score2 != "") {
 				score.setScore2(Integer.valueOf(score2));
 				log += " - Score2:" + score2;
+				sumScore += Integer.valueOf(score2);
 			}
 			if (score3 != "") {
 				score.setScore3(Integer.valueOf(score3));
 				log += " - Score3:" + score3;
+				sumScore += Integer.valueOf(score3);
 			}
 			if (bonus != "") {
 				int existBonus;
@@ -95,6 +99,7 @@ public class ScoreService {
 				score.setBonusNote(existBonusNote + bonus + ": " + bonusNote + "<br>");
 
 				log += "-Bonus: " + score.getBonusNote();
+				sumScore += Integer.valueOf(bonus);
 			}
 			if (penalty != "") {
 				int existPenalty;
@@ -111,6 +116,7 @@ public class ScoreService {
 				score.setPenaltyNote(existPenaltyNote + penalty + ": " + penaltyNote + "<br>");
 
 				log += "-Penalty: " + score.getPenaltyNote();
+				sumScore -= Integer.valueOf(penalty);
 			}
 			score.setNote(note);
 
@@ -118,9 +124,6 @@ public class ScoreService {
 				log += "- Note: " + note;
 
 			// Calculate sum score.
-			Integer sumScore = Integer.valueOf(score.getCryptogramScore()) + Integer.valueOf(score.getScore1())
-					+ Integer.valueOf(score.getScore2()) + Integer.valueOf(score.getScore3())
-					+ Integer.valueOf(score.getBonus()) - Integer.valueOf(score.getPenalty());
 			score.setSumScore(sumScore);
 
 			score.setLog(log);

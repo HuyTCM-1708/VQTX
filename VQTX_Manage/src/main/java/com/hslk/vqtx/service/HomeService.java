@@ -43,18 +43,18 @@ public class HomeService {
      * Initial HomeService constructor.
      */
     public HomeService() {
-//        User admin = new User();
-//        admin.setUsername("admin");
-//        admin.setPassword("HuyTCM");
-//        admin.setRole(true);
-//        
-//        UserController userController = new UserController(entityManagerFactory);
-//        try {
-//            userController.create(admin);
-//        } catch (Exception ex) {
-//            logger.error("Initial Homeservice", ex);
-//        }
-//        this.generateChiefAcc(30);
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword("HuyTCM");
+        admin.setRole(true);
+        
+        UserController userController = new UserController(entityManagerFactory);
+        try {
+            userController.create(admin);
+        } catch (Exception ex) {
+            logger.error("Initial Homeservice", ex);
+        }
+        this.generateChiefAcc(30);
     }
     /**
      * Auto generate chief account.
@@ -72,7 +72,9 @@ public class HomeService {
             chief.setUsername(username);
             //set random password
             String password = UUID.randomUUID().toString().substring(0, sizePass);
-            chief.setPassword(password);
+            //TODO: edit later
+            //chief.setPassword(password);
+            chief.setPassword("12345");
             chief.setRole(false);
             
             UserController userController = new UserController(entityManagerFactory);

@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/hslk/vqtx/HomeController.java=UTF-8
 encoding//src/main/java/com/hslk/vqtx/TeamController.java=UTF-8
+encoding//src/main/java/com/hslk/vqtx/service/StationService.java=UTF-8
 encoding//src/main/java/com/hslk/vqtx/service/TeamService.java=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/team/team_home.jsp=UTF-8

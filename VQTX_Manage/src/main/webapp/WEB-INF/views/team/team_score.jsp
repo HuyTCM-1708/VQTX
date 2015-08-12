@@ -15,11 +15,11 @@
 	<!-- Menu -->
 	<table>
 		<tr>
-			<th style="background-color: blue;">
+			<th>
 				<c:url var="team_home" value="teamPage"></c:url>
 				<a href="${team_home}">Trang chủ</a>
 			</th>
-			<th>
+			<th style="background-color: green;">
 				<c:url var="team_score" value="teamScore"></c:url>
 				<a href="${team_score}">Bảng điểm đội</a>
 			</th>

@@ -124,26 +124,26 @@
                     </tr>
                     <tr>
                         <th>TT 1</th>
-                        <th><input id="score1" type="text" name="txtScore1" style="width: 100px;" pattern="\d+" /></th>
+                        <th><input id="score1" type="number" name="txtScore1" style="width: 100px;" pattern="\d+" /></th>
             			<c:url var="deleteCurrStation" value="/deleteCurrStation" />
                         <th rowspan="3"><a href="${deleteCurrStation}">Chọn nước khác</a></th>
                     </tr>
                     <tr>
                         <th>TT 2</th>
-                        <th><input id="score2" type="text" name="txtScore2" style="width: 100px;"pattern="\d+"/></th>
+                        <th><input id="score2" type="number" name="txtScore2" style="width: 100px;"pattern="\d+"/></th>
                     </tr>
                     <tr>
                         <th>TT 3</th>
-                        <th><input id="score3" type="text" name="txtScore3" style="width: 100px;" pattern="\d+"/></th>
+                        <th><input id="score3" type="number" name="txtScore3" style="width: 100px;" pattern="\d+"/></th>
                     </tr>
                     <tr>
                         <th>Điểm cộng</th>
-                        <th><input id="bonus" type="text" name="bonus" style="width: 100px;" pattern="\d+"/></th>
+                        <th><input id="bonus" type="number" name="bonus" style="width: 100px;" pattern="\d+"/></th>
                         <td><input id="bonusNote" type="text" name="bonusNote" placeholder="Lý do cộng điểm"/></td> 
                     </tr>
                     <tr>
                         <th>Điểm trừ</th>
-                        <th><input id="penalty" type="text" name="penalty" style="width: 100px;"pattern="\d+"/></th>
+                        <th><input id="penalty" type="number" name="penalty" style="width: 100px;"pattern="\d+"/></th>
                     	<td><input id="penaltyNote" type="text" name="penaltyNote" placeholder="Lý do trừ điểm"/></td> 
                     </tr>
                     <tr>

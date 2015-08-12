@@ -25,11 +25,11 @@ table, th {
 	<!-- Menu -->
 	<table>
 		<tr>
-			<th style="background-color: blue;"><c:url var="team_home"
+			<th><c:url var="team_home"
 					value="teamPage"></c:url> <a href="${team_home}">Trang chủ</a></th>
 			<th><c:url var="team_score" value="teamScore"></c:url> <a
 				href="${team_score}">Bảng điểm đội</a></th>
-			<th><c:url var="finalScore" value="finalScore"></c:url> <a
+			<th style="background-color: green;"><c:url var="finalScore" value="finalScore"></c:url> <a
 				href="${finalScore}">Bảng tổng sắp</a></th>
 		</tr>
 	</table>

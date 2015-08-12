@@ -26,8 +26,10 @@ import javax.persistence.Persistence;
 
 import org.apache.log4j.Logger;
 
+import codereport.daocontroller.CryptogramController;
 import codereport.daocontroller.StationController;
 import codereport.daocontroller.UserController;
+import codereport.entity.Cryptogram;
 import codereport.entity.Station;
 import codereport.entity.User;
 
@@ -47,10 +49,27 @@ public class StationService {
      */
     public void addStations(long noStation) {
         StationController stationController = new StationController(entityManagerFactory);
+        CryptogramController cryptogramController = new CryptogramController(entityManagerFactory);
         for (int i = 0; i < noStation; i++) {
             Station station = new Station();
+            //TODO: Edit later
+            int stationCode = i + 1;
+            station.setStationCode(stationCode);
+            station.setEnrollCode("abc"+stationCode);
+            station.setOverCode("xyz"+stationCode);
+            station.setPlace("Place" + stationCode);
+            station.setStationName("StationName" + stationCode);
+
+            Cryptogram cryptogram = new Cryptogram();
+            cryptogram.setStationCode(stationCode);
+            cryptogram.setHint1("Gợi ý " + 1 + " trạm " + stationCode );
+            cryptogram.setHint2("Gợi ý " + 2 + " trạm " + stationCode );
+            cryptogram.setHint3("Gợi ý " + 3 + " trạm " + stationCode );
+            cryptogram.setCryptogramCode("MMT"+stationCode);
+            
             try {
                 stationController.create(station);
+                cryptogramController.create(cryptogram);
             } catch (Exception ex) {
                 logger.error("Exception occurs when add new station", ex);
             }

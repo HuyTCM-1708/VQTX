@@ -123,8 +123,8 @@ public class TeamController {
 	
 	@RequestMapping(value = "finalScore")
 	public String finalScore(Model model) {
-		HashMap<String, Integer> result = scoreService.finallyScore();
-		model.addAttribute("FINALSCORE", result);
+//		HashMap<String, Integer> result = scoreService.finallyScore();
+//		model.addAttribute("FINALSCORE", result);
 		return "/team/finalScore";
 	}
 	
@@ -137,18 +137,14 @@ public class TeamController {
 		Integer teamCode = teamService
 				.getTeamCodeByUsername(user.getUsername());
 		if (teamCode >= 0) {
-			if (teamService.onSubmitCryptogramCode(cryptogramCode, teamCode)) {
-				try {
-					response.sendRedirect("teamPage");
-				} catch (IOException e) {
-					model.addAttribute("msg",
-							"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
-					LOGGER.error("submitCryptogramCode: ", e);
-					return teamPage;
-				}
-			} else {
+			teamService.onSubmitCryptogramCode(cryptogramCode, teamCode);
+			try {
+				response.sendRedirect("teamPage");
+			} catch (IOException e) {
 				model.addAttribute("msg",
 						"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
+				LOGGER.error("submitCryptogramCode: ", e);
+				return teamPage;
 			}
 		}
 		return teamPage;
@@ -203,15 +199,13 @@ public class TeamController {
 		Integer teamCode = teamService.getTeamCodeByUsername(user.getUsername());
 		String overCode = request.getParameter("overCode");
 		String stationCode = request.getParameter("stationCode");
-		Boolean result = teamService.overStation(overCode, teamCode, Integer.valueOf(stationCode));
-		if (result) {
-			try {
-				response.sendRedirect("teamPage");
-			} catch (IOException e) {
-				model.addAttribute("msg",
-						"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
-				LOGGER.error("enrollStation: ", e);
-			}
+		teamService.overStation(overCode, teamCode, Integer.valueOf(stationCode));
+		try {
+			response.sendRedirect("teamPage");
+		} catch (IOException e) {
+			model.addAttribute("msg",
+					"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
+			LOGGER.error("enrollStation: ", e);
 		}
 		return teamPage;
 	}

@@ -51,27 +51,26 @@ public class Station implements Serializable {
     @Column(name = "StationCode")
     private Integer stationCode;
     /**Chief .*/
-    @Column(name = "Chief")
-    private String chief;
+    @Column(name = "OverCode")
+    private String overCode;
     @Column(name = "StationName")
     private String stationName;
     @Column(name = "Place")
     private String place;
+    
     /**
-     * Get value of the chief.
-     * @return the chief
-     */
-    public String getChief() {
-        return chief;
-    }
-    /**
-     * Set value for the chief.
-     * @param chief the chief to set
-     */
-    public void setChief(String chief) {
-        this.chief = chief;
-    }
-    /**Chief's name .*/
+	 * @return the overCode
+	 */
+	public String getOverCode() {
+		return overCode;
+	}
+	/**
+	 * @param overCode the overCode to set
+	 */
+	public void setOverCode(String overCode) {
+		this.overCode = overCode;
+	}
+	/**Chief's name .*/
     @Column(name = "EnrollCode")
     private String enrollCode;
     /**
