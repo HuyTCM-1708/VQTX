@@ -109,7 +109,7 @@
     <div>
         <h5>Xin chào, ${USER.username}</h5>
         <c:if test="${not empty cookie.currStation}">
-            <h1>Quốc gia: VQTX_Trạm_${cookie.currStation.value}</h1>
+            <h1>Quốc gia: ${CURRSTATION.stationName}</h1>
             <form name="scoreForm" action="addScore" method="post" onsubmit="return validate()">
                 <input type="hidden" value="${cookie.currStation.value}" name="stationCode">
                 <table>

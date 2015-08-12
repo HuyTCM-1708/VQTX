@@ -167,13 +167,13 @@ public class HomeController {
                 List<Team> listTeams = teamService.listAllTeam();
                 model.addAttribute("listTeams", listTeams);
                 
-//                Cookie[] cookies = request.getCookies();
-//                for (Cookie cookie : cookies) {
-//                    if (cookie.getName().equals("currStation")) {
-//                        List<Integer> listTeams = teamService.listTeams(cookie.getValue());
-//                        model.addAttribute("listTeams", listTeams);
-//                    }
-//                }
+                Cookie[] cookies = request.getCookies();
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("currStation")) {
+                        Station station = scoreService.getCurrStation(Integer.valueOf(cookie.getValue())); 
+                        model.addAttribute("CURRSTATION", station);
+                    }
+                }
             }
         } catch (Exception ex) {
             try {
