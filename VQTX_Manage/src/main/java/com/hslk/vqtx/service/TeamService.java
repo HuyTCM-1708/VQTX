@@ -255,6 +255,7 @@ public class TeamService {
     	ScoreController scoreController = new ScoreController(entityManagerFactory);
     	Score score = scoreController.getScoreWithEnrollCode(scorePK, enrollCode);
     	if (score != null) {
+    		score.setCryptogramScore(50 - score.getNumOfHint()*10);
 			score.setProcessing(true);
 			try {
 				scoreController.edit(score);
