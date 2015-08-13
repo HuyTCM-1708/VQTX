@@ -35,8 +35,7 @@ public class TeamController {
 	/** Declare team page . */
 	private final String teamPage = "/team/team_home";
 	/** Initial log . */
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(HomeController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 	/** Declare TeamService . */
 	@Resource(name = "teamService")
 	private TeamService teamService;
@@ -45,21 +44,18 @@ public class TeamController {
 	private ScoreService scoreService;
 
 	@RequestMapping(value = "teamPage")
-	public String team_home(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public String team_home(HttpServletRequest request, HttpServletResponse response, Model model) {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
 		Team team = teamService.getUnUpdateTeam(user.getUsername());
 		if (team != null) {
 			return "/team/update_team";
 		} else {
-			Score score = scoreService.getCurrScore(teamService
-					.getTeamCodeByUsername(user.getUsername()));
+			Score score = scoreService.getCurrScore(teamService.getTeamCodeByUsername(user.getUsername()));
 			if (score != null) {
 				Station station = scoreService.getCurrStation(score.getScorePK().getStationCode());
-				String hint = teamService.getHint(score.getNumOfHint(), score
-						.getScorePK().getTeamCode(), score.getScorePK()
-						.getStationCode());
+				String hint = teamService.getHint(score.getNumOfHint(), score.getScorePK().getTeamCode(),
+						score.getScorePK().getStationCode());
 				model.addAttribute("HINT", hint);
 				model.addAttribute("CURRSTATION", station);
 				model.addAttribute("SCORE", score);
@@ -67,10 +63,9 @@ public class TeamController {
 			return "/team/team_home";
 		}
 	}
-	
+
 	@RequestMapping(value = "updateTeam")
-	public void updateTeam(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public void updateTeam(HttpServletRequest request, HttpServletResponse response, Model model) {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
 
@@ -84,11 +79,9 @@ public class TeamController {
 		String member5 = request.getParameter("member5");
 		String member6 = request.getParameter("member6");
 		String member7 = request.getParameter("member7");
-		Integer teamCode = teamService
-				.getTeamCodeByUsername(user.getUsername());
-		boolean result = teamService.updateTeam(teamCode, teamName, teamLead,
-				phone, member1, member2, member3, member4, member5, member6,
-				member7);
+		Integer teamCode = teamService.getTeamCodeByUsername(user.getUsername());
+		boolean result = teamService.updateTeam(teamCode, teamName, teamLead, phone, member1, member2, member3, member4,
+				member5, member6, member7);
 		if (result) {
 			try {
 				response.sendRedirect("teamPage");
@@ -105,13 +98,12 @@ public class TeamController {
 		}
 	}
 
-	
 	@RequestMapping(value = "teamScore")
 	public String getTeamScore(HttpServletRequest request, HttpServletResponse response, Model model) {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
 		Integer teamCode = teamService.getTeamCodeByUsername(user.getUsername());
-		
+
 		List<Score> listScores = teamService.getScoreByTeamCode(teamCode);
 		if (listScores != null) {
 			model.addAttribute("LISTSCORES", listScores);
@@ -120,78 +112,67 @@ public class TeamController {
 		}
 		return "/team/team_score";
 	}
-	
+
 	@RequestMapping(value = "finalScore")
 	public String finalScore(Model model) {
-//		HashMap<String, Integer> result = scoreService.finallyScore();
-//		model.addAttribute("FINALSCORE", result);
+		// HashMap<String, Integer> result = scoreService.finallyScore();
+		// model.addAttribute("FINALSCORE", result);
 		return "/team/finalScore";
 	}
-	
+
 	@RequestMapping(value = "submitCryptogramCode")
-	public String submitCryptogramCode(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public String submitCryptogramCode(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String cryptogramCode = request.getParameter("cryptogramCode");
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
-		Integer teamCode = teamService
-				.getTeamCodeByUsername(user.getUsername());
+		Integer teamCode = teamService.getTeamCodeByUsername(user.getUsername());
 		if (teamCode >= 0) {
 			teamService.onSubmitCryptogramCode(cryptogramCode, teamCode);
 			try {
 				response.sendRedirect("teamPage");
 			} catch (IOException e) {
-				model.addAttribute("msg",
-						"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
+				model.addAttribute("msg", "Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
 				LOGGER.error("submitCryptogramCode: ", e);
 				return teamPage;
 			}
 		}
-		return teamPage;
+		return team_home(request, response, model);
 	}
 
 	@RequestMapping(value = "getHint")
-	public String getHint(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public String getHint(HttpServletRequest request, HttpServletResponse response, Model model) {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
-		Integer teamCode = teamService
-				.getTeamCodeByUsername(user.getUsername());
+		Integer teamCode = teamService.getTeamCodeByUsername(user.getUsername());
 		String numOfHint = request.getParameter("numOfHint");
 		String stationCode = request.getParameter("stationCode");
-		String hint = teamService.getHint(Integer.valueOf(numOfHint) + 1,
-				teamCode, Integer.valueOf(stationCode));
+		String hint = teamService.getHint(Integer.valueOf(numOfHint) + 1, teamCode, Integer.valueOf(stationCode));
 		System.out.println(hint);
 		try {
 			response.sendRedirect("teamPage");
 		} catch (IOException e) {
-			model.addAttribute("msg",
-					"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
-			return teamPage;
+			model.addAttribute("msg", "Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
 		}
-		return teamPage;
+		return team_home(request, response, model);
 	}
 
 	@RequestMapping(value = "enrollStation")
-	public String enrollStation(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+	public String enrollStation(HttpServletRequest request, HttpServletResponse response, Model model) {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
-		Integer teamCode = teamService
-				.getTeamCodeByUsername(user.getUsername());
+		Integer teamCode = teamService.getTeamCodeByUsername(user.getUsername());
 		String enrollCode = request.getParameter("enrollCode");
 		String stationCode = request.getParameter("stationCode");
-		teamService.enrollStation(enrollCode, teamCode,
-				Integer.valueOf(stationCode));
+		teamService.enrollStation(enrollCode, teamCode, Integer.valueOf(stationCode));
 		try {
 			response.sendRedirect("teamPage");
 		} catch (IOException e) {
-			model.addAttribute("msg",
-					"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
+			model.addAttribute("msg", "Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
 			LOGGER.error("enrollStation: ", e);
 		}
-		return teamPage;
+		return team_home(request, response, model);
 	}
+
 	@RequestMapping(value = "overStation")
 	public String overStation(HttpServletRequest request, HttpServletResponse response, Model model) {
 		HttpSession session = request.getSession();
@@ -203,10 +184,9 @@ public class TeamController {
 		try {
 			response.sendRedirect("teamPage");
 		} catch (IOException e) {
-			model.addAttribute("msg",
-					"Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
+			model.addAttribute("msg", "Có lỗi xảy ra, hãy thử lại!\n Hoặc liên hệ admin để được hỗ trợ.");
 			LOGGER.error("enrollStation: ", e);
 		}
-		return teamPage;
+		return team_home(request, response, model);
 	}
 }

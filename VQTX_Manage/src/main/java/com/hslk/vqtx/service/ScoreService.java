@@ -43,6 +43,11 @@ public class ScoreService {
 	/** Initial Entity Manager Factory . */
 	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DaoGeneratePU");
 
+	public List<Score> getScoreEntity() {
+		ScoreController scoreController = new ScoreController(entityManagerFactory);
+		return scoreController.getScoreEntity();
+	}
+
 	/**
 	 * Add score to a team in the station. If exist, update it.
 	 * 
@@ -66,9 +71,9 @@ public class ScoreService {
 		ScoreController scoreController = new ScoreController(entityManagerFactory);
 		ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
 		Score score = scoreController.checkExist(scorePK);
-		String log = score.getLog() + " <br>User:" + username;
-		Integer sumScore = score.getCryptogramScore();
 		if (score != null) {
+			String log = score.getLog() + " <br>User:" + username;
+			Integer sumScore = score.getCryptogramScore();
 			if (score1 != "") {
 				score.setScore1(Integer.valueOf(score1));
 				log += " - Score1:" + score1;
@@ -118,7 +123,16 @@ public class ScoreService {
 				log += "-Penalty: " + score.getPenaltyNote();
 				sumScore -= Integer.valueOf(penalty);
 			}
-			score.setNote(note);
+
+			if (note != "") {
+				String textNote = note.replace("\n", "<br>");
+				String existNote = score.getNote();
+				if (existNote == null) {
+					existNote = "";
+				}
+				score.setNote(existNote + textNote);
+
+			}
 
 			if (note != null)
 				log += "- Note: " + note;
@@ -221,11 +235,13 @@ public class ScoreService {
 		TeamController teamController = new TeamController(entityManagerFactory);
 		HashMap<String, Integer> finalScore = new HashMap<String, Integer>();
 		List<Object[]> listResult = scoreController.getFinalScore();
-		for (Object[] result : listResult) {
-			Integer teamCode = Integer.valueOf((String) result[0]);
-			String team = teamController.findUser(teamCode).getTeam();
-			Integer score = Integer.valueOf((String) result[1]);
-			finalScore.put(team, score);
+		if (listResult != null) {
+			for (Object[] result : listResult) {
+				Integer teamCode = Integer.valueOf((String) result[0]);
+				String team = teamController.findUser(teamCode).getTeam();
+				Integer score = Integer.valueOf((String) result[1]);
+				finalScore.put(team, score);
+			}
 		}
 		return finalScore;
 	}

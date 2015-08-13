@@ -37,21 +37,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TEAM")
 @XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t"),
+@NamedQueries({ @NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t"),
 		@NamedQuery(name = "Team.findTeamByUsername", query = "SELECT t FROM Team t WHERE t.team = :username"),
 		@NamedQuery(name = "Team.findTeamUnUpdateInfo", query = "SELECT t FROM Team t WHERE t.team = :username AND t.teamName = null")
-// ,
-// @NamedQuery(name = "Team.findTeam", query = "SELECT a.teamCode "
-// +
-// "FROM (SELECT tblC.stationCode,tblC.teamCode,sc.score1,sc.score2,sc.score3 "
-// + "FROM Score sc "
-// + "RIGHT JOIN (SELECT t.teamCode,st.stationCode "
-// + "FROM Team t "
-// + "CROSS JOIN Station st) tblC "
-// + "ON sc.teamCode = tblC.teamCode AND sc.stationCode=tblC.stationCode) a "
-// + "WHERE  a.score1 is null AND a.score2 is null AND a.score3 is null "
-// + "AND a.stationCode = :stationCode")
+		// ,
+		// @NamedQuery(name = "Team.findTeam", query = "SELECT a.teamCode "
+		// +
+		// "FROM (SELECT
+		// tblC.stationCode,tblC.teamCode,sc.score1,sc.score2,sc.score3 "
+		// + "FROM Score sc "
+		// + "RIGHT JOIN (SELECT t.teamCode,st.stationCode "
+		// + "FROM Team t "
+		// + "CROSS JOIN Station st) tblC "
+		// + "ON sc.teamCode = tblC.teamCode AND
+		// sc.stationCode=tblC.stationCode) a "
+		// + "WHERE a.score1 is null AND a.score2 is null AND a.score3 is null "
+		// + "AND a.stationCode = :stationCode")
 })
 public class Team implements Serializable {
 	/** . */
@@ -117,7 +118,7 @@ public class Team implements Serializable {
 	/** Member 9 . */
 	@Column(name = "Approved")
 	private boolean approved;
-	
+
 	/**
 	 * @return the teamName
 	 */
@@ -126,7 +127,8 @@ public class Team implements Serializable {
 	}
 
 	/**
-	 * @param teamName the teamName to set
+	 * @param teamName
+	 *            the teamName to set
 	 */
 	public void setTeamName(String teamName) {
 		this.teamName = teamName;
@@ -140,7 +142,8 @@ public class Team implements Serializable {
 	}
 
 	/**
-	 * @param approved the approved to set
+	 * @param approved
+	 *            the approved to set
 	 */
 	public void setApproved(boolean approved) {
 		this.approved = approved;

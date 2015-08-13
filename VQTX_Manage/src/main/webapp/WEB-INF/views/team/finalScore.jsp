@@ -25,12 +25,13 @@ table, th {
 	<!-- Menu -->
 	<table>
 		<tr>
-			<th><c:url var="team_home"
-					value="teamPage"></c:url> <a href="${team_home}">Trang chủ</a></th>
+			<th><c:url var="team_home" value="teamPage"></c:url> <a
+				href="${team_home}">Trang chủ</a></th>
 			<th><c:url var="team_score" value="teamScore"></c:url> <a
 				href="${team_score}">Bảng điểm đội</a></th>
-			<th style="background-color: green;"><c:url var="finalScore" value="finalScore"></c:url> <a
-				href="${finalScore}">Bảng tổng sắp</a></th>
+			<th style="background-color: green;"><c:url var="finalScore"
+					value="finalScore"></c:url> <a href="${finalScore}">Bảng tổng
+					sắp</a></th>
 		</tr>
 	</table>
 	<!-- Content -->
@@ -50,5 +51,10 @@ table, th {
 			</c:forEach>
 		</table>
 	</c:if>
+	<footer style="background-color: #CCCCCC;">
+	<p>Liên hệ:</p>
+	<p>Admin - 01646056680 (Mr.Huy)</p>
+	<span><font color="blue">Phát triển bởi CLB Học sinh -
+			Sinh viên thị xã Long Khánh HSLK.Info®</font></span> </footer>
 </body>
 </html>
