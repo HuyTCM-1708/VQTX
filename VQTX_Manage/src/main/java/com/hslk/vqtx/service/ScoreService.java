@@ -43,6 +43,11 @@ public class ScoreService {
 	/** Initial Entity Manager Factory . */
 	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DaoGeneratePU");
 
+	public List<Score> getScoreEntity() {
+		ScoreController scoreController = new ScoreController(entityManagerFactory);
+		return scoreController.getScoreEntity();
+	}
+
 	/**
 	 * Add score to a team in the station. If exist, update it.
 	 * 
@@ -66,9 +71,9 @@ public class ScoreService {
 		ScoreController scoreController = new ScoreController(entityManagerFactory);
 		ScorePK scorePK = new ScorePK(Integer.valueOf(stationCode), Integer.valueOf(teamCode));
 		Score score = scoreController.checkExist(scorePK);
-		String log = score.getLog() + " <br>User:" + username;
-		Integer sumScore = score.getCryptogramScore();
 		if (score != null) {
+			String log = score.getLog() + " <br>User:" + username;
+			Integer sumScore = score.getCryptogramScore();
 			if (score1 != "") {
 				score.setScore1(Integer.valueOf(score1));
 				log += " - Score1:" + score1;

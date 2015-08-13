@@ -44,6 +44,7 @@ public class HomeService {
 	 * Initial HomeService constructor.
 	 */
 	public HomeService() {
+		//Generate administratior's account
 		User admin = new User();
 		admin.setUsername("admin");
 		admin.setPassword("HuyTCM");
@@ -55,6 +56,8 @@ public class HomeService {
 		} catch (Exception ex) {
 			logger.error("Initial Homeservice", ex);
 		}
+		
+		//Generate chief's account
 		this.generateChiefAcc(30);
 	}
 

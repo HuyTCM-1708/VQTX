@@ -110,6 +110,21 @@ public class ScoreController implements Serializable {
 		}
 	}
 
+	public List<Score> getScoreEntity() {
+		EntityManager entityManager = null;
+		try {
+			entityManager = getEntityManager();
+			String jqpl = "Score.findAll";
+			Query query = entityManager.createNamedQuery(jqpl);
+			@SuppressWarnings("unchecked")
+			List<Score> listScores = query.getResultList();
+			return listScores;
+		} catch (Exception e) {
+			LOGGER.error("getScoreEntity: ", e);
+			return null;
+		}
+	}
+
 	/**
 	 * Check if record score is existed.
 	 * 

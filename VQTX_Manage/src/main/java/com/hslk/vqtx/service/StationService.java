@@ -43,6 +43,9 @@ public class StationService {
 	/** Initial Entity Manager Factory . */
 	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DaoGeneratePU");
 
+	public StationService() {
+		// TODO Auto-generated constructor stub
+	}
 	/**
 	 * Add new stations.
 	 * 

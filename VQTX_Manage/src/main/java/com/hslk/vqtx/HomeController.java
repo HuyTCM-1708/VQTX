@@ -144,6 +144,9 @@ public class HomeController {
 
 				List<Team> listTeams = teamService.listAllTeam();
 				model.addAttribute("listTeams", listTeams);
+				
+				List<Score> scores = scoreService.getScoreEntity();
+				model.addAttribute("SCORES", scores);
 			} else {
 				try {
 					response.sendError(permissionDeny, "You do not have permission to login this page!");
@@ -160,7 +163,10 @@ public class HomeController {
 		}
 		return "/admin/AdminManagePage";
 	}
-
+	@RequestMapping(value = "editScore")
+	public void editScore(HttpServletRequest request, HttpServletResponse response) {
+		//TODO:
+	}
 	/**
 	 * Send redirect to chief page.
 	 * 

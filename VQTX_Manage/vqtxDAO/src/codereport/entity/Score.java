@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({ @NamedQuery(name = "Score.getScore", query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK"),
 		@NamedQuery(name = "Score.getCurrScore", query = "SELECT s FROM Score s WHERE s.scorePK.teamCode = :teamCode AND s.completed = :completed"),
 		@NamedQuery(name = "Score.getEnrollCode", query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.enrollCode = :enrollCode"),
-		@NamedQuery(name = "Score.getOverCode", query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.overCode = :overCode") })
+		@NamedQuery(name = "Score.getOverCode", query = "SELECT s FROM Score s WHERE s.scorePK = :scorePK AND s.overCode = :overCode"),
+		@NamedQuery(name = "Score.findAll", query = "SELECT s FROM Score s") })
 public class Score implements Serializable {
 
 	/** . */
