@@ -118,7 +118,16 @@ public class ScoreService {
 				log += "-Penalty: " + score.getPenaltyNote();
 				sumScore -= Integer.valueOf(penalty);
 			}
-			score.setNote(note);
+
+			if (note != "") {
+				String textNote = note.replace("\n", "<br>");
+				String existNote = score.getNote();
+				if (existNote == null) {
+					existNote = "";
+				}
+				score.setNote(existNote + textNote);
+
+			}
 
 			if (note != null)
 				log += "- Note: " + note;
@@ -221,11 +230,13 @@ public class ScoreService {
 		TeamController teamController = new TeamController(entityManagerFactory);
 		HashMap<String, Integer> finalScore = new HashMap<String, Integer>();
 		List<Object[]> listResult = scoreController.getFinalScore();
-		for (Object[] result : listResult) {
-			Integer teamCode = Integer.valueOf((String) result[0]);
-			String team = teamController.findUser(teamCode).getTeam();
-			Integer score = Integer.valueOf((String) result[1]);
-			finalScore.put(team, score);
+		if (listResult != null) {
+			for (Object[] result : listResult) {
+				Integer teamCode = Integer.valueOf((String) result[0]);
+				String team = teamController.findUser(teamCode).getTeam();
+				Integer score = Integer.valueOf((String) result[1]);
+				finalScore.put(team, score);
+			}
 		}
 		return finalScore;
 	}

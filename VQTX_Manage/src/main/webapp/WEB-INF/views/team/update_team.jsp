@@ -10,8 +10,9 @@
 <title>Thay đổi thông tin đội chơi</title>
 </head>
 <body>
-<h4>Cập nhật thông tin đội chơi:</h4>
-	<form action="updateTeam" onsubmit="return confirm('Thông tin đội sẽ không được thay đổi\n Bạn đã chắc chắn mọi thông tin là chính xác?');">
+	<h4>Cập nhật thông tin đội chơi:</h4>
+	<form action="updateTeam"
+		onsubmit="return confirm('Thông tin đội sẽ không được thay đổi\n Bạn đã chắc chắn mọi thông tin là chính xác?');">
 		<table>
 			<tr>
 				<th>Tên đội:</th>
@@ -59,5 +60,10 @@
 			</tr>
 		</table>
 	</form>
+	<footer style="background-color: #CCCCCC;">
+	<p>Liên hệ:</p>
+	<p>Admin - 01646056680 (Mr.Huy)</p>
+	<span><font color="blue">Phát triển bởi CLB Học sinh -
+			Sinh viên thị xã Long Khánh HSLK.Info®</font></span> </footer>
 </body>
 </html>

@@ -25,18 +25,12 @@ table, th {
 	<!-- Menu -->
 	<table>
 		<tr>
-			<th style="background-color: green;">
-				<c:url var="team_home" value="teamPage"></c:url>
-				<a href="${team_home}">Trang chủ</a>
-			</th>
-			<th>
-				<c:url var="team_score" value="teamScore"></c:url>
-				<a href="${team_score}">Bảng điểm đội</a>
-			</th>
-			<th>
-				<c:url var="finalScore" value="finalScore"></c:url>
-				<a href="${finalScore}">Bảng tổng sắp</a>
-			</th>
+			<th style="background-color: green;"><c:url var="team_home"
+					value="teamPage"></c:url> <a href="${team_home}">Trang chủ</a></th>
+			<th><c:url var="team_score" value="teamScore"></c:url> <a
+				href="${team_score}">Bảng điểm đội</a></th>
+			<th><c:url var="finalScore" value="finalScore"></c:url> <a
+				href="${finalScore}">Bảng tổng sắp</a></th>
 		</tr>
 	</table>
 	<!-- Content -->
@@ -57,9 +51,10 @@ table, th {
 	</c:if>
 	<c:if test="${not empty SCORE}">
 		<c:if test="${not SCORE.processing}">
-		<c:if test="${not empty CURRSTATION}">
-			<span><font color="blue">Hướng dẫn đường đi: ${CURRSTATION.place}</font></span>
-		</c:if>
+			<c:if test="${not empty CURRSTATION}">
+				<span><font color="blue">Hướng dẫn đường đi:
+						${CURRSTATION.place}</font></span>
+			</c:if>
 			<form action="enrollStation" method="post">
 				<input type="text" name="enrollCode" placeholder="Mã nhập trạm" />
 				<input type="hidden" name="stationCode"
@@ -68,11 +63,12 @@ table, th {
 			</form>
 			<br />
 			<c:if test="${SCORE.numOfHint < 3}">
-				<form action="getHint" onsubmit="return confirm('Nhận gợi ý sẽ bị mất điểm.\n Bạn vẫn muốn tiếp tục?');">
+				<form action="getHint"
+					onsubmit="return confirm('Nhận gợi ý sẽ bị mất điểm.\n Bạn vẫn muốn tiếp tục?');">
 					<input type="hidden" name="stationCode"
 						value="${SCORE.scorePK.stationCode}" /> <input type="hidden"
 						name="numOfHint" value="${SCORE.numOfHint}" /> <input
-						type="submit" value="Nhận gợi ý ${SCORE.numOfHint + 1}"/>
+						type="submit" value="Nhận gợi ý ${SCORE.numOfHint + 1}" />
 				</form>
 			</c:if>
 			<c:if test="${not empty HINT}">
@@ -80,17 +76,23 @@ table, th {
 			</c:if>
 		</c:if>
 		<c:if test="${SCORE.processing}">
-		<c:if test="${not empty CURRSTATION}">
-			<span><font color="blue">Chào mừng bạn đến trạm: ${CURRSTATION.stationName}</font></span>
-		</c:if>
+			<c:if test="${not empty CURRSTATION}">
+				<span><font color="blue">Chào mừng bạn đến trạm:
+						${CURRSTATION.stationName}</font></span>
+			</c:if>
 			<h1>Đang thực hiện thử thách...</h1>
 			<form action="overStation" method="post">
-				Mã xuất trạm: <input type ="text" name="overCode" placeholder="Mã xuất trạm" />
-				<input type="hidden" name="stationCode"
-					value="${SCORE.scorePK.stationCode}" />
+				Mã xuất trạm: <input type="text" name="overCode"
+					placeholder="Mã xuất trạm" /> <input type="hidden"
+					name="stationCode" value="${SCORE.scorePK.stationCode}" />
 				<button>Xác nhận</button>
 			</form>
 		</c:if>
 	</c:if>
+	<footer style="background-color: #CCCCCC;">
+	<p>Liên hệ:</p>
+	<p>Admin - 01646056680 (Mr.Huy)</p>
+	<span><font color="blue">Phát triển bởi CLB Học sinh -
+			Sinh viên thị xã Long Khánh HSLK.Info®</font></span> </footer>
 </body>
 </html>

@@ -30,7 +30,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 /**
  * @author HuyTCM
  *
@@ -38,77 +37,88 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "STATION")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Station.findAll"
-            , query = "SELECT s FROM Station s")
-    })
+@NamedQueries({ @NamedQuery(name = "Station.findAll", query = "SELECT s FROM Station s") })
 public class Station implements Serializable {
-    /** . */
-    private static final long serialVersionUID = 1L;
-    /**Station code .*/
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "StationCode")
-    private Integer stationCode;
-    /**Chief .*/
-    @Column(name = "OverCode")
-    private String overCode;
-    @Column(name = "StationName")
-    private String stationName;
-    @Column(name = "Place")
-    private String place;
-    
-    /**
+	/** . */
+	private static final long serialVersionUID = 1L;
+	/** Station code . */
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "StationCode")
+	private Integer stationCode;
+	/** Chief . */
+	@Column(name = "OverCode")
+	private String overCode;
+	@Column(name = "StationName")
+	private String stationName;
+	@Column(name = "Place")
+	private String place;
+
+	/**
 	 * @return the overCode
 	 */
 	public String getOverCode() {
 		return overCode;
 	}
+
 	/**
-	 * @param overCode the overCode to set
+	 * @param overCode
+	 *            the overCode to set
 	 */
 	public void setOverCode(String overCode) {
 		this.overCode = overCode;
 	}
-	/**Chief's name .*/
-    @Column(name = "EnrollCode")
-    private String enrollCode;
-    /**
-     * Get value of the stationCode.
-     * @return the stationCode
-     */
-    public Integer getStationCode() {
-        return stationCode;
-    }
-    /**
-     * Set value for the stationCode.
-     * @param stationCode the stationCode to set
-     */
-    public void setStationCode(Integer stationCode) {
-        this.stationCode = stationCode;
-    }
+
+	/** Chief's name . */
+	@Column(name = "EnrollCode")
+	private String enrollCode;
+
+	/**
+	 * Get value of the stationCode.
+	 * 
+	 * @return the stationCode
+	 */
+	public Integer getStationCode() {
+		return stationCode;
+	}
+
+	/**
+	 * Set value for the stationCode.
+	 * 
+	 * @param stationCode
+	 *            the stationCode to set
+	 */
+	public void setStationCode(Integer stationCode) {
+		this.stationCode = stationCode;
+	}
+
 	/**
 	 * @return the enrollCode
 	 */
 	public String getEnrollCode() {
 		return enrollCode;
 	}
+
 	/**
-	 * @param enrollCode the enrollCode to set
+	 * @param enrollCode
+	 *            the enrollCode to set
 	 */
 	public void setEnrollCode(String enrollCode) {
 		this.enrollCode = enrollCode;
 	}
-	
+
 	public String getStationName() {
 		return stationName;
 	}
+
 	public void setStationName(String stationName) {
 		this.stationName = stationName;
 	}
+
 	public String getPlace() {
 		return place;
 	}
+
 	public void setPlace(String place) {
 		this.place = place;
 	}

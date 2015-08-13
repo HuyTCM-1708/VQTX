@@ -24,13 +24,15 @@ public class CryptogramController implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private EntityManagerFactory emf = null;
-	
+
 	public CryptogramController(EntityManagerFactory emf) {
 		this.emf = emf;
 	}
+
 	public EntityManager getEntityManager() {
 		return this.emf.createEntityManager();
 	}
+
 	public void create(Cryptogram cryptogram) throws Exception {
 		EntityManager em = null;
 		try {
@@ -46,7 +48,7 @@ public class CryptogramController implements Serializable {
 			}
 		}
 	}
-	
+
 	public void edit(Cryptogram cryptogram) throws Exception {
 		EntityManager em = null;
 		try {
@@ -62,12 +64,12 @@ public class CryptogramController implements Serializable {
 			}
 		}
 	}
-	
+
 	public Cryptogram findCryptogram(String cryptogramCode) {
 		EntityManager em = this.getEntityManager();
 		return em.find(Cryptogram.class, cryptogramCode);
 	}
-	
+
 	public Cryptogram findCryptogramByStationCode(Integer stationCode) {
 		EntityManager em = null;
 		try {

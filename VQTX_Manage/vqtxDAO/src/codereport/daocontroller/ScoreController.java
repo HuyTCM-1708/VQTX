@@ -39,8 +39,7 @@ public class ScoreController implements Serializable {
 	/** . */
 	private static final long serialVersionUID = 1L;
 	/** Initial Logger . */
-	private static final Logger LOGGER = Logger
-			.getLogger(ScoreController.class);
+	private static final Logger LOGGER = Logger.getLogger(ScoreController.class);
 	/** Declare entity manager factory . */
 	private EntityManagerFactory emf = null;
 
@@ -102,7 +101,12 @@ public class ScoreController implements Serializable {
 			score = entityManager.merge(score);
 			entityManager.getTransaction().commit();
 		} catch (Exception ex) {
+			entityManager.getTransaction().rollback();
 			throw new Exception(ex);
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
 		}
 	}
 
@@ -158,8 +162,8 @@ public class ScoreController implements Serializable {
 			return null;
 		}
 	}
-	
-	public Score getScoreWithEnrollCode(ScorePK scorePK,String enrollCode) {
+
+	public Score getScoreWithEnrollCode(ScorePK scorePK, String enrollCode) {
 		EntityManager entityManager = null;
 		try {
 			entityManager = getEntityManager();
@@ -173,7 +177,8 @@ public class ScoreController implements Serializable {
 			return null;
 		}
 	}
-	public Score getScoreWithOverCode(ScorePK scorePK,String overCode) {
+
+	public Score getScoreWithOverCode(ScorePK scorePK, String overCode) {
 		EntityManager entityManager = null;
 		try {
 			entityManager = getEntityManager();
@@ -187,6 +192,7 @@ public class ScoreController implements Serializable {
 			return null;
 		}
 	}
+
 	public List<Score> getAllScoreOfTeam(Integer teamCode) {
 		EntityManager entityManager = null;
 		try {
@@ -202,20 +208,19 @@ public class ScoreController implements Serializable {
 			return null;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getFinalScore() {
 		EntityManager entityManager = null;
 		try {
 			entityManager = getEntityManager();
-			String sql = "SELECT s.scorePK.teamCode, SUM(s.sumScore)"
-						+"FROM Score s "
-						+"GROUP BY s.scorePK.teamCode"
-						+"ORDER BY SUM(s.sumScore) ASC";
-			Query query = entityManager.createQuery(sql);
+			String sql = "SELECT s.scorePK.teamCode, SUM(s.sumScore) AS FINAL" + "FROM Score s"
+					+ "GROUP BY s.scorePK.teamCode" + "ORDER BY FINAL ASC";
+			Query query = entityManager.createQuery(sql, Score.class);
 			List<Object[]> result = query.getResultList();
 			return result;
 		} catch (Exception e) {
+			LOGGER.error("getFinalScore:", e);
 			return null;
 		}
 	}

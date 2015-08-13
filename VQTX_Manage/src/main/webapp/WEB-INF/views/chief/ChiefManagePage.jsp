@@ -1,12 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta name="viewport" content="width=device-width,height=90%,  user-scalable = no">
+<meta name="viewport"
+	content="width=device-width,height=90%,  user-scalable = no">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>VQTX-Trạm trưởng</title>
-<script src="${pageContext.servletContext.contextPath}/resources/jquery-1.11.3.js"></script>
+<script
+	src="${pageContext.servletContext.contextPath}/resources/jquery-1.11.3.js"></script>
 </head>
 <script type="text/javascript">
 	function validate() {
@@ -90,93 +93,114 @@
 	            $("#bonusNote").val("");
 	            $("#penanlty").val("");
 	            $("#penanltyNote").val("");
+	            $("#note").val("");
+	            
 	            var bonusNote = data.bonusNote;
 	            var bon = bonusNote.replace('<br>','<br/>');
 	            var penanltyNote = data.penaltyNote;
 	            var pen = penanltyNote.replace('<br>','<br/>');
+	            var note = data.note;
+	            var noteText = note.replace('<br>','<br/>');
 	            $("#bonNote").html(bon);
 	            $("#penNote").html(pen);
-	            if(data.note != ""){
-		            $("#note").val(data.note);
-		            } else {
-		                $("#note").val("");
-		            }
+	            $("#textNote").html(noteText);
 	          }
 	    });
 	}
 </script>
 <body>
-    <div>
-        <h5>Xin chào, ${USER.username}</h5>
-        <c:if test="${not empty cookie.currStation}">
-            <h1>Quốc gia: ${CURRSTATION.stationName}</h1>
-            <form name="scoreForm" action="addScore" method="post" onsubmit="return validate()">
-                <input type="hidden" value="${cookie.currStation.value}" name="stationCode">
-                <table>
-                    <tr>
-                        <th>Mã HK</th>
-                        <th><select name="teamCode" onchange="getScore(${cookie.currStation.value},this.value)">
-                                <option value="0"></option>
-                                <c:forEach var="team" items="${listTeams}">
-                                    <option value="${team.teamCode}">${team.team}</option>
-                                </c:forEach>
-                        </select></th>
-                    </tr>
-                    <tr>
-                        <th>TT 1</th>
-                        <th><input id="score1" type="number" name="txtScore1" style="width: 100px;" pattern="\d+" /></th>
-            			<c:url var="deleteCurrStation" value="/deleteCurrStation" />
-                        <th rowspan="3"><a href="${deleteCurrStation}">Chọn nước khác</a></th>
-                    </tr>
-                    <tr>
-                        <th>TT 2</th>
-                        <th><input id="score2" type="number" name="txtScore2" style="width: 100px;"pattern="\d+"/></th>
-                    </tr>
-                    <tr>
-                        <th>TT 3</th>
-                        <th><input id="score3" type="number" name="txtScore3" style="width: 100px;" pattern="\d+"/></th>
-                    </tr>
-                    <tr>
-                        <th>Điểm cộng</th>
-                        <th><input id="bonus" type="number" name="bonus" style="width: 100px;" pattern="\d+"/></th>
-                        <td><input id="bonusNote" type="text" name="bonusNote" placeholder="Lý do cộng điểm"/></td> 
-                    </tr>
-                    <tr>
-                        <th>Điểm trừ</th>
-                        <th><input id="penalty" type="number" name="penalty" style="width: 100px;"pattern="\d+"/></th>
-                    	<td><input id="penaltyNote" type="text" name="penaltyNote" placeholder="Lý do trừ điểm"/></td> 
-                    </tr>
-                    <tr>
-                        <th>Ghi chú</th>
-                        <th colspan="2"><textarea id="note" rows="4" cols="30" name="note" /></textarea></th>
-                    </tr>
-                    <tr>
-                        <td colspan="2"></td>
-                        <td style="float: right;"><input type="submit" value="Lưu" /> <input type="reset"
-                            value="Xóa" /></td>
-                    </tr>
-                </table>
-                <table border="1">
-                	<tr>
-                    	<th>Điểm cộng</th>
-                    	<td colspan="2" width="200px"><div id="bonNote"></div></td>
-                    </tr>
-                    <tr>
-                    	<th>Điểm trừ</th>
-                    	<td colspan="2" width="200px"><div id="penNote"></div></td>
-                    </tr>
-                </table>
-            </form>
-        </c:if>
-        <c:if test="${empty cookie.currStation}">
-            <form action="chooseStation" method="post">
-                Mã trạm: <select name="slStation">
-                    <c:forEach var="station" items="${listStations}">
-                        <option value="${station.stationCode}">${station.stationName}</option>
-                    </c:forEach>
-                </select> <input type="submit" value="Chọn trạm" />
-            </form>
-        </c:if>
-    </div>
+	<div>
+		<h5>Xin chào, ${USER.username}</h5>
+		<c:if test="${not empty cookie.currStation}">
+			<h1>Quốc gia: ${CURRSTATION.stationName}</h1>
+			<form name="scoreForm" action="addScore" method="post"
+				onsubmit="return validate()">
+				<input type="hidden" value="${cookie.currStation.value}"
+					name="stationCode">
+				<table>
+					<tr>
+						<th>Mã HK</th>
+						<th><select name="teamCode"
+							onchange="getScore(${cookie.currStation.value},this.value)">
+								<option value="0"></option>
+								<c:forEach var="team" items="${listTeams}">
+									<option value="${team.teamCode}">${team.team}</option>
+								</c:forEach>
+						</select></th>
+					</tr>
+					<tr>
+						<th>TT 1</th>
+						<th><input id="score1" type="number" name="txtScore1"
+							style="width: 100px;" pattern="\d+" /></th>
+						<c:url var="deleteCurrStation" value="/deleteCurrStation" />
+						<th rowspan="3"><a href="${deleteCurrStation}">Chọn nước
+								khác</a></th>
+					</tr>
+					<tr>
+						<th>TT 2</th>
+						<th><input id="score2" type="number" name="txtScore2"
+							style="width: 100px;" pattern="\d+" /></th>
+					</tr>
+					<tr>
+						<th>TT 3</th>
+						<th><input id="score3" type="number" name="txtScore3"
+							style="width: 100px;" pattern="\d+" /></th>
+					</tr>
+					<tr>
+						<th>Điểm cộng</th>
+						<th><input id="bonus" type="number" name="bonus"
+							style="width: 100px;" pattern="\d+" /></th>
+						<td><input id="bonusNote" type="text" name="bonusNote"
+							placeholder="Lý do cộng điểm" /></td>
+					</tr>
+					<tr>
+						<th>Điểm trừ</th>
+						<th><input id="penalty" type="number" name="penalty"
+							style="width: 100px;" pattern="\d+" /></th>
+						<td><input id="penaltyNote" type="text" name="penaltyNote"
+							placeholder="Lý do trừ điểm" /></td>
+					</tr>
+					<tr>
+						<th>Ghi chú</th>
+						<th colspan="2"><textarea id="note" rows="4" cols="30"
+								name="note" /></textarea></th>
+					</tr>
+					<tr>
+						<td colspan="2"></td>
+						<td style="float: right;"><input type="submit" value="Lưu" />
+							<input type="reset" value="Xóa" /></td>
+					</tr>
+				</table>
+				<table border="1">
+					<tr>
+						<th>Ghi chú</th>
+						<td colspan="2" width="200px"><div id="textNote"></div></td>
+					</tr>
+					<tr>
+						<th>Điểm cộng</th>
+						<td colspan="2" width="200px"><div id="bonNote"></div></td>
+					</tr>
+					<tr>
+						<th>Điểm trừ</th>
+						<td colspan="2" width="200px"><div id="penNote"></div></td>
+					</tr>
+				</table>
+			</form>
+		</c:if>
+		<c:if test="${empty cookie.currStation}">
+			<form action="chooseStation" method="post">
+				Mã trạm: <select name="slStation">
+					<c:forEach var="station" items="${listStations}">
+						<option value="${station.stationCode}">${station.stationName}</option>
+					</c:forEach>
+				</select> <input type="submit" value="Chọn trạm" />
+			</form>
+		</c:if>
+	</div>
+	<footer style="background-color: #CCCCCC;">
+	<p>Liên hệ:</p>
+	<p>Admin - 01646056680 (Mr.Huy)</p>
+	<span><font color="blue">Phát triển bởi CLB Học sinh -
+			Sinh viên thị xã Long Khánh HSLK.Info®</font></span> </footer>
 </body>
 </html>
